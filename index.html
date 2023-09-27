@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <!-- Défnition des balises de référencement -->
     <meta charset="UTF-8">
@@ -9,30 +9,13 @@
     <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
 </head>
 <body>
-    <!-- Commentaire de test afin de tester l'update automatique sur l'hébergeur -->
-    <div class="contentarea">
-        <h1>MDN - navigator.mediaDevices.getUserMedia(): Still photo capture demo</h1>
-        <p>
-            Cet exemple montre comment configurer un flux multimédia à l'aide de votre
-            webcam, récupérer une image de ce flux et créer un PNG en utilisant cette image.
-        </p>
+    <main class="main-page">
         <div class="camera">
           <video id="video">Video stream not available.</video>
           <button id="startbutton">Take photo</button>
         </div>
         <canvas id="canvas"> </canvas>
-        <div class="output">
-          <img id="photo" alt="The screen capture will appear in this box." />
-        </div>
-        <p>
-          Visit our article
-          <a
-            href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Taking_still_photos">
-            Taking still photos with WebRTC</a
-          >
-          to learn more about the technologies used here.
-        </p>
-      </div>    
-      <script src="index.js"></script>
+      </main>    
+    <script src="index.js"></script>
 </body>
 </html>
