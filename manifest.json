@@ -9,7 +9,7 @@
         }
     ],
     "display": "standalone",
-    "start_url": "/?source=pwa",
+    "start_url": "/sonus-imaginari/",
     "short_name": "sonus-imaginari",
     "description": "Application pour transformer la couleur en son",
     "theme_color": "#ffffff",
