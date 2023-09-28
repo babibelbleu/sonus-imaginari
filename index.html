@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test de flux vidéo</title>
     <link rel="stylesheet" href="index.css">
-    <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
 </head>
 <body>
     <main class="main-page">
@@ -29,6 +28,13 @@
         </div>
         <canvas id="canvas"> </canvas>
       </main>    
+    <script src="couleursVersSons.js"></script>
+    <script>
+        function testCouleur() {
+            let couleurDetectee = [255, 0, 0]; // Simulez une couleur détectée
+            quandCouleurDetectee(couleurDetectee);
+        }
+    </script>
     <script src="index.js"></script>
 </body>
 </html>
