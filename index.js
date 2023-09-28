@@ -51,7 +51,6 @@ function startup() {
   }
   video = document.getElementById("video");
   canvas = document.getElementById("canvas");
-  photo = document.getElementById("photo");
   startbutton = document.getElementById("startbutton");
 
   navigator.mediaDevices
@@ -201,8 +200,6 @@ function takepicture() {
     
     console.log(rgbValues[couleurAnalyser])
 
-    const data = canvas.toDataURL("image/png");
-    photo.setAttribute("src", data);
     // Classification et affichage de la catégorie de couleur
     afficherCategorieCouleur(rgbValues[couleurAnalyser]);
   } else {
