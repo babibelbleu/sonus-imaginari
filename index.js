@@ -1,6 +1,6 @@
 window.addEventListener("load", () => {
   if("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/sw.js");
+    navigator.serviceWorker.register("/serviceworker.js");
   }
 });
 // The width and height of the captured photo. We will set the
