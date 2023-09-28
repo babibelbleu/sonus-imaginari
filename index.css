@@ -31,3 +31,64 @@ body{
   left: 50%;
   transform: translate(-50%,-50%);
 }
+
+.icon{
+  max-width: 5rem;
+  max-height: 5rem;
+}
+
+.top-icons{
+  position: absolute;
+  z-index: 100;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 1rem;
+}
+
+#nav-bar{
+  position: absolute;
+  z-index: 101;
+  background-color: darkgray;
+  height: 100vh;
+  width: 60%;
+}
+
+.nav-bar-open{
+  animation: slide-in 0.5s forwards;
+}
+
+.nav-bar-close{
+  animation: slide-out 0.5s forwards;
+}
+
+.navigation-links > li{
+  list-style-type: none;
+}
+
+.navigation-links{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 0;
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-out {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

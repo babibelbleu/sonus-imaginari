@@ -10,6 +10,17 @@
 </head>
 <body>
     <main class="main-page">
+      <div class="top-icons">
+        <img src="icons/burger_menu.svg" alt="Menu de navigation" class="icon" onclick="switchMenu()">
+        <img src="icons/download.svg" alt="Télécharger l'enregistrement" class="icon">
+      </div>
+      <nav id="nav-bar" onclick="closeMenu()">
+        <ul class="navigation-links">
+          <li>Link 1</li>
+          <li>Link 2</li>
+          <li>Link 3</li>
+        </ul>
+      </nav>
         <div class="camera">
           <div class="video-container">
             <video id="video">Video stream not available.</video>

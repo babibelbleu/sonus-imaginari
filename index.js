@@ -24,6 +24,8 @@ let canvas = null;
 let photo = null;
 let startbutton = null;
 
+let navbar = null;
+
 function showViewLiveResultButton() {
   if (window.self !== window.top) {
     // Ensure that if our document is in a frame, we get the user
@@ -40,6 +42,11 @@ function showViewLiveResultButton() {
 }
 
 function startup() {
+
+  navbar = document.getElementById("nav-bar");
+
+  navbar.style.display = "none";
+
   if (showViewLiveResultButton()) {
     return;
   }
@@ -130,6 +137,29 @@ function takepicture() {
   }
 }
 
+function switchMenu() {
+  if (navbar.style.display === "none") {
+    // make smooth transition
+    navbar.style.display = "block";
+    navbar.classList.remove("nav-bar-close");
+    navbar.classList.add("nav-bar-open");
+  }
+}
+
+function closeMenu(){
+  navbar.classList.remove("nav-bar-open");
+  navbar.classList.add("nav-bar-close");
+  setTimeout(() => {
+    navbar.style.display = "none";
+  }, 500);
+}
+
 // Set up our event listener to run the startup process
 // once loading is complete.
 window.addEventListener("load", startup, false);
+
+// Prends une photo toutes les secondes
+// TODO: Raccourcir le temps pour donner une illusion de temps réel
+setInterval(() => {
+  takepicture();
+}, 1000);
