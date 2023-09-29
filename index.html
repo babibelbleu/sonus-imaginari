@@ -4,6 +4,10 @@
     <!-- Défnition des balises de référencement -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
     <title>Test de flux vidéo</title>
     <link rel="stylesheet" href="index.css">
     <link rel="manifest" href="manifest.json">
@@ -23,16 +27,14 @@
       </nav>
         <div class="camera">
           <div class="video-container">
-            <div class="video-container-video">
-              <video 
-                id="video"
-                autoplay
-                playsinline
-                muted
-              >
-                Video stream not available.
-              </video>
-            </div>
+            <video 
+              id="video"
+              autoplay
+              playsinline
+              muted
+            >
+              Video stream not available.
+            </video>
           </div>
         </div>
         <canvas id="canvas"> </canvas>

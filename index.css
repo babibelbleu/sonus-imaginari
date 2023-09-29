@@ -16,17 +16,7 @@ body{
   height: 100%; 
   overflow: hidden;
 }
-.video-container .video-container-video {
-
-  /* Center the video */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-}
-
-.video-container .video-container-video video{
-  
+.video-container video {
   /* Make video to at least 100% wide and tall */
   min-width: 100%; 
   min-height: 100%; 
@@ -34,6 +24,12 @@ body{
   /* Setting width & height to auto prevents the browser from stretching or squishing the video */
   width: auto;
   height: auto;
+
+  /* Center the video */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
 }
 
 .icon{
@@ -77,21 +73,6 @@ body{
   align-items: center;
   gap: 1rem;
   padding: 0;
-}
-
-.pc-version{
-  display: none;
-}
-
-
-@media screen and (min-width: 768px){
-  /* .main-page{
-    display: none;
-  } */
-
-  .pc-version{
-    display: block;
-  }
 }
 
 @keyframes slide-in {
