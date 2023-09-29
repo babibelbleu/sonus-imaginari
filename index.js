@@ -1,11 +1,14 @@
+const NOTES_FOLDER_NAME = "notes/LOFI"
+const NOTE_EXTENSION = ".mp3"
+
 const notes = {
-  DO : "./notes/DO.wav",
-  RE : "./notes/RE.wav",
-  MI : "./notes/MI.wav",
-  FA : "./notes/FA.wav",
-  SOL : "./notes/SOL.wav",
-  LA : "./notes/LA.wav",
-  SI : "./notes/SI.wav"
+  DO : `./${NOTES_FOLDER_NAME}/DO${NOTE_EXTENSION}`,
+  RE : `./${NOTES_FOLDER_NAME}/RE${NOTE_EXTENSION}`,
+  MI : `./${NOTES_FOLDER_NAME}/MI${NOTE_EXTENSION}`,
+  FA : `./${NOTES_FOLDER_NAME}/FA${NOTE_EXTENSION}`,
+  SOL :`"./${NOTES_FOLDER_NAME}/SOL${NOTE_EXTENSION}`,
+  LA : `./${NOTES_FOLDER_NAME}/LA${NOTE_EXTENSION}`,
+  SI : `./${NOTES_FOLDER_NAME}/SI${NOTE_EXTENSION}`
 }
 
 window.addEventListener("load", () => {
@@ -365,4 +368,4 @@ window.addEventListener("load", startup, false);
 // TODO: Raccourcir le temps pour donner une illusion de temps réel
 setInterval(() => {
   takepicture();
-}, 500);
+}, 1);
