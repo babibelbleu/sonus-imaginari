@@ -1,3 +1,13 @@
+const notes = {
+  DO : "./notes/DO.wav",
+  RE : "./notes/RE.wav",
+  MI : "./notes/MI.wav",
+  FA : "./notes/FA.wav",
+  SOL : "./notes/SOL.wav",
+  LA : "./notes/LA.wav",
+  SI : "./notes/SI.wav"
+}
+
 window.addEventListener("load", () => {
   if("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./serviceworker.js");
@@ -112,6 +122,41 @@ function clearphoto() {
 // drawing that to the screen, we can change its size and/or apply
 // other changes before drawing it.
 
+
+function testColorClassification(red, green, blue){
+  const colors = {
+    NOIR : () => {
+      return red < 50 && green < 50 && blue < 50;
+    },
+    BLANC : () => {
+      return red > 230 && green > 230 && blue > 230;
+    },
+    ROUGE : () => {
+      return green + blue < red;
+    },
+    VERT : () => {
+      return red + blue < green;
+    },
+    BLEU : () => {
+      return red + green < blue;
+    },
+    JAUNE : () => {
+      return (red - green < 10 || green - red < 10) && (red - blue > 20 || green - blue > 20);
+    },
+    CYAN : () => {
+      return (blue - green < 10 || green - blue < 10) && (blue - red > 20 || green - red > 20);
+    }
+  }
+
+  for (const color in colors) {
+    if (colors[color]()) {
+      return color;
+    }
+  }
+
+  return "Autre";
+}
+
 // Fonction pour classifier une couleur en catégorie (violet, jaune, etc.)
 function classifierCouleur(red, green, blue) {
   // Seuils pour différentes couleurs
@@ -176,8 +221,28 @@ function classifierCouleur(red, green, blue) {
 
 
 function afficherCategorieCouleur(couleur) {
-const categorie = classifierCouleur(couleur.red, couleur.green, couleur.blue);
-console.log(`Couleur : R=${couleur.red} G=${couleur.green} B=${couleur.blue}, Catégorie : ${categorie}`);
+  const categorie = classifierCouleur(couleur.red, couleur.green, couleur.blue);
+  // console.log(`Couleur : R=${couleur.red} G=${couleur.green} B=${couleur.blue}, Catégorie : ${categorie}`);
+
+  const color = testColorClassification(couleur.red, couleur.green, couleur.blue);
+
+  console.log(color);
+
+  if(color === "NOIR"){
+    new Audio(notes.DO).play();
+  } else if(color === "BLANC"){
+    new Audio(notes.RE).play();
+  } else if(color === "ROUGE"){
+    new Audio(notes.MI).play();
+  } else if(color === "VERT"){
+    new Audio(notes.FA).play();
+  } else if(color === "BLEU"){
+    new Audio(notes.SOL).play();
+  } else if(color === "JAUNE"){
+    new Audio(notes.LA).play();
+  } else if(color === "CYAN"){
+    new Audio(notes.SI).play();
+  }
 }
 
 
@@ -277,4 +342,4 @@ window.addEventListener("load", startup, false);
 // TODO: Raccourcir le temps pour donner une illusion de temps réel
 setInterval(() => {
   takepicture();
-}, 1000);
+}, 3000);

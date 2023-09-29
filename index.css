@@ -75,6 +75,21 @@ body{
   padding: 0;
 }
 
+.pc-version{
+  display: none;
+}
+
+
+@media screen and (min-width: 768px){
+  /* .main-page{
+    display: none;
+  } */
+
+  .pc-version{
+    display: block;
+  }
+}
+
 @keyframes slide-in {
   0% {
     transform: translateX(-100%);
