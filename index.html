@@ -23,7 +23,14 @@
       </nav>
         <div class="camera">
           <div class="video-container">
-            <video id="video">Video stream not available.</video>
+            <video 
+              id="video"
+              autoPlay={true}
+              playsInline={true}
+              muted={true}
+            >
+              Video stream not available.
+            </video>
           </div>
         </div>
         <canvas id="canvas"> </canvas>
