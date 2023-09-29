@@ -63,23 +63,25 @@ function startup() {
   canvas = document.getElementById("canvas");
   startbutton = document.getElementById("startbutton");
 
-  let camera = null;
-
   navigator.mediaDevices.enumerateDevices().then(devices => {
+
+    const CAM_NAME_BLACKLIST = ["Droid", "OBS"];
   
-    const cameras = devices.filter((device) => device.kind === 'videoinput');
+    const cameras = devices.filter((device) => device.kind === 'videoinput').filter((camera) => camera.label && !CAM_NAME_BLACKLIST.some((name) => camera.label.includes(name)));
+
     if (cameras.length === 0) {
       throw 'No camera found on this device.';
     }
-    camera = cameras[cameras.length - 1];
-  });
 
-  navigator.mediaDevices
+    console.log("CAMERAS :", cameras);
+    const camera = cameras[cameras.length - 1];
+
+    navigator.mediaDevices
     .getUserMedia(
       {
         video: {
           deviceId: camera.deviceId,
-          facingMode: "environment",
+          facingMode: ["user", "environment"],
           height: {ideal: 1080},
           width: {ideal: 1920}
         },
@@ -126,6 +128,7 @@ function startup() {
   );
 
   clearphoto();
+  });
 }
 
 function clearphoto() {
