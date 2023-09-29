@@ -63,10 +63,28 @@ function startup() {
   canvas = document.getElementById("canvas");
   startbutton = document.getElementById("startbutton");
 
+  let camera = null;
+
+  navigator.mediaDevices.enumerateDevices().then(devices => {
+  
+    const cameras = devices.filter((device) => device.kind === 'videoinput');
+    if (cameras.length === 0) {
+      throw 'No camera found on this device.';
+    }
+    camera = cameras[cameras.length - 1];
+  });
+
   navigator.mediaDevices
-    .getUserMedia({ video: {
-      facingMode: "environment"
-    }, audio: false })
+    .getUserMedia(
+      {
+        video: {
+          deviceId: camera.deviceId,
+          facingMode: "environment",
+          height: {ideal: 1080},
+          width: {ideal: 1920}
+        },
+        audio: false 
+      })
     .then((stream) => {
       video.srcObject = stream;
       video.play();
@@ -218,7 +236,7 @@ function classifierCouleur(red, green, blue) {
     }
   }
 
-  return "Autre"; // Si aucune catégorie de couleur n'est trouvée
+  return "COULEUR NON RECONNUE"; // Si aucune catégorie de couleur n'est trouvée
 }
 
 
