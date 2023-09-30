@@ -368,4 +368,4 @@ window.addEventListener("load", startup, false);
 // TODO: Raccourcir le temps pour donner une illusion de temps réel
 setInterval(() => {
   takepicture();
-}, 1);
+}, 500);
