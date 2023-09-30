@@ -1,14 +1,18 @@
 const NOTES_FOLDER_NAME = "notes"
 const NOTE_EXTENSION = ".wav"
 
-const notes = {
-  DO : `./${NOTES_FOLDER_NAME}/DO${NOTE_EXTENSION}`,
-  RE : `./${NOTES_FOLDER_NAME}/RE${NOTE_EXTENSION}`,
-  MI : `./${NOTES_FOLDER_NAME}/MI${NOTE_EXTENSION}`,
-  FA : `./${NOTES_FOLDER_NAME}/FA${NOTE_EXTENSION}`,
-  SOL :`"./${NOTES_FOLDER_NAME}/SOL${NOTE_EXTENSION}`,
-  LA : `./${NOTES_FOLDER_NAME}/LA${NOTE_EXTENSION}`,
-  SI : `./${NOTES_FOLDER_NAME}/SI${NOTE_EXTENSION}`
+const GENRES = ["PIANO", "LOFI"];
+
+let genre_index = 0;
+
+let notes = {
+  DO : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/DO${NOTE_EXTENSION}`,
+  RE : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/RE${NOTE_EXTENSION}`,
+  MI : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/MI${NOTE_EXTENSION}`,
+  FA : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/FA${NOTE_EXTENSION}`,
+  SOL :`"./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/SOL${NOTE_EXTENSION}`,
+  LA : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/LA${NOTE_EXTENSION}`,
+  SI : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/SI${NOTE_EXTENSION}`
 }
 
 window.addEventListener("load", () => {
@@ -51,6 +55,26 @@ function showViewLiveResultButton() {
     return true;
   }
   return false;
+}
+
+function changeGenre(name){
+  if(name === "RANDOM"){
+    genre_index = Math.floor(Math.random() * GENRES.length);
+  } else {
+    genre_index = GENRES.indexOf(name);
+  }
+
+  notes = {
+    DO : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/DO${NOTE_EXTENSION}`,
+    RE : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/RE${NOTE_EXTENSION}`,
+    MI : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/MI${NOTE_EXTENSION}`,
+    FA : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/FA${NOTE_EXTENSION}`,
+    SOL :`"./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/SOL${NOTE_EXTENSION}`,
+    LA : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/LA${NOTE_EXTENSION}`,
+    SI : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/SI${NOTE_EXTENSION}`
+  }
+
+  closeMenu();
 }
 
 function startup() {
@@ -299,6 +323,7 @@ function takepicture() {
 }
 
 function switchMenu() {
+  console.log("switch menu");
   if (navbar.style.display === "none") {
     // make smooth transition
     navbar.style.display = "block";
