@@ -1,5 +1,5 @@
 const NOTES_FOLDER_NAME = "notes"
-const NOTE_EXTENSION = ".mp3"
+const NOTE_EXTENSION = ".wav"
 
 const notes = {
   DO : `./${NOTES_FOLDER_NAME}/DO${NOTE_EXTENSION}`,
