@@ -1,4 +1,4 @@
-const NOTES_FOLDER_NAME = "notes/LOFI"
+const NOTES_FOLDER_NAME = "notes"
 const NOTE_EXTENSION = ".mp3"
 
 const notes = {
