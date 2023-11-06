@@ -1,3 +1,20 @@
+const NOTES_FOLDER_NAME = "notes"
+const NOTE_EXTENSION = ".wav"
+
+const GENRES = ["PIANO", "LOFI"];
+
+let genre_index = 0;
+
+let notes = {
+  DO : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/DO${NOTE_EXTENSION}`,
+  RE : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/RE${NOTE_EXTENSION}`,
+  MI : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/MI${NOTE_EXTENSION}`,
+  FA : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/FA${NOTE_EXTENSION}`,
+  SOL :`"./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/SOL${NOTE_EXTENSION}`,
+  LA : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/LA${NOTE_EXTENSION}`,
+  SI : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/SI${NOTE_EXTENSION}`
+}
+
 window.addEventListener("load", () => {
   if("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./serviceworker.js");
@@ -40,6 +57,26 @@ function showViewLiveResultButton() {
   return false;
 }
 
+function changeGenre(name){
+  if(name === "RANDOM"){
+    genre_index = Math.floor(Math.random() * GENRES.length);
+  } else {
+    genre_index = GENRES.indexOf(name);
+  }
+
+  notes = {
+    DO : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/DO${NOTE_EXTENSION}`,
+    RE : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/RE${NOTE_EXTENSION}`,
+    MI : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/MI${NOTE_EXTENSION}`,
+    FA : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/FA${NOTE_EXTENSION}`,
+    SOL :`"./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/SOL${NOTE_EXTENSION}`,
+    LA : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/LA${NOTE_EXTENSION}`,
+    SI : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/SI${NOTE_EXTENSION}`
+  }
+
+  closeMenu();
+}
+
 function startup() {
 
   navbar = document.getElementById("nav-bar");
@@ -53,8 +90,30 @@ function startup() {
   canvas = document.getElementById("canvas");
   startbutton = document.getElementById("startbutton");
 
-  navigator.mediaDevices
-    .getUserMedia({ video: true, audio: false })
+  navigator.mediaDevices.enumerateDevices().then(devices => {
+
+    const CAM_NAME_BLACKLIST = ["Droid", "OBS"];
+  
+    const cameras = devices.filter((device) => device.kind === 'videoinput').filter((camera) => camera.label && !CAM_NAME_BLACKLIST.some((name) => camera.label.includes(name)));
+
+    if (cameras.length === 0) {
+      throw 'No camera found on this device.';
+    }
+
+    console.log("CAMERAS :", cameras);
+    const camera = cameras[cameras.length - 1];
+
+    navigator.mediaDevices
+    .getUserMedia(
+      {
+        video: {
+          deviceId: camera.deviceId,
+          facingMode: ["user", "environment"],
+          height: {ideal: 1080},
+          width: {ideal: 1920}
+        },
+        audio: false 
+      })
     .then((stream) => {
       video.srcObject = stream;
       video.play();
@@ -96,6 +155,7 @@ function startup() {
   );
 
   clearphoto();
+  });
 }
 
 function clearphoto() {
@@ -111,6 +171,41 @@ function clearphoto() {
 // format data URL. By drawing it on an offscreen canvas and then
 // drawing that to the screen, we can change its size and/or apply
 // other changes before drawing it.
+
+
+function testColorClassification(red, green, blue){
+  const colors = {
+    NOIR : () => {
+      return red < 50 && green < 50 && blue < 50;
+    },
+    BLANC : () => {
+      return red > 230 && green > 230 && blue > 230;
+    },
+    ROUGE : () => {
+      return green + blue < red;
+    },
+    VERT : () => {
+      return red + blue < green;
+    },
+    BLEU : () => {
+      return red + green < blue;
+    },
+    JAUNE : () => {
+      return (red - green < 10 || green - red < 10) && (red - blue > 20 || green - blue > 20);
+    },
+    CYAN : () => {
+      return (blue - green < 10 || green - blue < 10) && (blue - red > 20 || green - red > 20);
+    }
+  }
+
+  for (const color in colors) {
+    if (colors[color]()) {
+      return color;
+    }
+  }
+
+  return "Autre";
+}
 
 // Fonction pour classifier une couleur en catégorie (violet, jaune, etc.)
 function classifierCouleur(red, green, blue) {
@@ -171,13 +266,33 @@ function classifierCouleur(red, green, blue) {
     }
   }
 
-  return "Autre"; // Si aucune catégorie de couleur n'est trouvée
+  return "COULEUR NON RECONNUE"; // Si aucune catégorie de couleur n'est trouvée
 }
 
 
 function afficherCategorieCouleur(couleur) {
-const categorie = classifierCouleur(couleur.red, couleur.green, couleur.blue);
-console.log(`Couleur : R=${couleur.red} G=${couleur.green} B=${couleur.blue}, Catégorie : ${categorie}`);
+  const categorie = classifierCouleur(couleur.red, couleur.green, couleur.blue);
+  // console.log(`Couleur : R=${couleur.red} G=${couleur.green} B=${couleur.blue}, Catégorie : ${categorie}`);
+
+  const color = testColorClassification(couleur.red, couleur.green, couleur.blue);
+
+  console.log(color);
+
+  if(color === "NOIR"){
+    new Audio(notes.DO).play();
+  } else if(color === "BLANC"){
+    new Audio(notes.RE).play();
+  } else if(color === "ROUGE"){
+    new Audio(notes.MI).play();
+  } else if(color === "VERT"){
+    new Audio(notes.FA).play();
+  } else if(color === "BLEU"){
+    new Audio(notes.SOL).play();
+  } else if(color === "JAUNE"){
+    new Audio(notes.LA).play();
+  } else if(color === "CYAN"){
+    new Audio(notes.SI).play();
+  }
 }
 
 
@@ -208,6 +323,7 @@ function takepicture() {
 }
 
 function switchMenu() {
+  console.log("switch menu");
   if (navbar.style.display === "none") {
     // make smooth transition
     navbar.style.display = "block";
@@ -277,4 +393,4 @@ window.addEventListener("load", startup, false);
 // TODO: Raccourcir le temps pour donner une illusion de temps réel
 setInterval(() => {
   takepicture();
-}, 1000);
+}, 500);
