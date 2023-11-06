@@ -112,7 +112,9 @@ function startup() {
           height: {ideal: 1080},
           width: {ideal: 1920}
         },
-        audio: false 
+        audio: false,
+        autoplay: true,
+        playinline: true
       })
     .then((stream) => {
       video.srcObject = stream;
