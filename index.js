@@ -106,6 +106,32 @@ function clearphoto() {
   const data = canvas.toDataURL("image/png");
 }
 
+
+function rgbToWavelength(r, g, b) {
+  // Normaliser les composants RGB entre 0 et 1
+  const red = r / 255;
+  const green = g / 255;
+  const blue = b / 255;
+
+  // Trouver la composante de couleur dominante
+  const max = Math.max(red, green, blue);
+
+  // Approximation basée sur la dominante de couleur
+  if (max === red) {
+    return mapValue(red, 0.0, 1.0, 625, 740); // Rouge
+  } else if (max === green) {
+    return mapValue(green, 0.0, 1.0, 520, 565); // Vert
+  } else if (max === blue) {
+    return mapValue(blue, 0.0, 1.0, 450, 500); // Bleu
+  }
+  return -1; // En cas de couleur non-monochromatique ou noire
+}
+
+// Fonction pour mapper une valeur d'un intervalle à un autre
+function mapValue(value, fromLow, fromHigh, toLow, toHigh) {
+  return (value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow;
+}
+
 // Capture a photo by fetching the current contents of the video
 // and drawing it into a canvas, then converting that to a PNG
 // format data URL. By drawing it on an offscreen canvas and then
@@ -113,72 +139,72 @@ function clearphoto() {
 // other changes before drawing it.
 
 // Fonction pour classifier une couleur en catégorie (violet, jaune, etc.)
-function classifierCouleur(red, green, blue) {
-  // Seuils pour différentes couleurs
-  const seuilsCouleurs = {
-    Violet: {
-      red: { min: 60, max: 255 }, 
-      green: { min: 0, max: 100 },
-      blue: { min: 130, max: 255 }
-    },
-    Rouge: {
-      red: { min: 200, max: 255 }, 
-      green: { min: 0, max: 75 },
-      blue: { min: 0, max: 75 } 
-    },
-    Vert: {
-      red: { min: 0, max: 75 },
-      green: { min: 200, max: 255 },
-      blue: { min: 0, max: 75 }
-    },
-    Bleu: {
-      red: { min: 0, max: 75 }, 
-      green: { min: 0, max: 75 },
-      blue: { min: 200, max: 255 }
-    },
-    Jaune: {
-      red: { min: 200, max: 255 },
-      green: { min: 200, max: 255 },
-      blue: { min: 0, max: 75 }
-    },
-    Noir: {
-      red: { min: 0, max: 40 },
-      green: { min: 0, max: 40 },
-      blue: { min: 0, max: 40 }
-    },
-    Rose: {
-      red: { min: 200, max: 255 },
-      green: { min: 100, max: 180 },
-      blue: { min: 150, max: 255 }
-    },
-    Marron: {
-      red: { min: 100, max: 150 },
-      green: { min: 50, max: 100 },
-      blue: { min: 0, max: 50 }
-    }
-  };
+// function classifierCouleur(red, green, blue) {
+//   // Seuils pour différentes couleurs
+//   const seuilsCouleurs = {
+//     Violet: {
+//       red: { min: 60, max: 255 }, 
+//       green: { min: 0, max: 100 },
+//       blue: { min: 130, max: 255 }
+//     },
+//     Rouge: {
+//       red: { min: 200, max: 255 }, 
+//       green: { min: 0, max: 75 },
+//       blue: { min: 0, max: 75 } 
+//     },
+//     Vert: {
+//       red: { min: 0, max: 75 },
+//       green: { min: 200, max: 255 },
+//       blue: { min: 0, max: 75 }
+//     },
+//     Bleu: {
+//       red: { min: 0, max: 75 }, 
+//       green: { min: 0, max: 75 },
+//       blue: { min: 200, max: 255 }
+//     },
+//     Jaune: {
+//       red: { min: 200, max: 255 },
+//       green: { min: 200, max: 255 },
+//       blue: { min: 0, max: 75 }
+//     },
+//     Noir: {
+//       red: { min: 0, max: 40 },
+//       green: { min: 0, max: 40 },
+//       blue: { min: 0, max: 40 }
+//     },
+//     Rose: {
+//       red: { min: 200, max: 255 },
+//       green: { min: 100, max: 180 },
+//       blue: { min: 150, max: 255 }
+//     },
+//     Marron: {
+//       red: { min: 100, max: 150 },
+//       green: { min: 50, max: 100 },
+//       blue: { min: 0, max: 50 }
+//     }
+//   };
   
 
-  // Parcourez les seuils de couleur et vérifiez si les valeurs RVB sont dans l'une des plages
-  for (const couleur in seuilsCouleurs) {
-    const seuils = seuilsCouleurs[couleur];
-    if (
-      red >= seuils.red.min && red <= seuils.red.max &&
-      green >= seuils.green.min && green <= seuils.green.max &&
-      blue >= seuils.blue.min && blue <= seuils.blue.max
-    ) {
-      return couleur;
-    }
-  }
+//   // Parcourez les seuils de couleur et vérifiez si les valeurs RVB sont dans l'une des plages
+//   for (const couleur in seuilsCouleurs) {
+//     const seuils = seuilsCouleurs[couleur];
+//     if (
+//       red >= seuils.red.min && red <= seuils.red.max &&
+//       green >= seuils.green.min && green <= seuils.green.max &&
+//       blue >= seuils.blue.min && blue <= seuils.blue.max
+//     ) {
+//       return couleur;
+//     }
+//   }
 
-  return "Autre"; // Si aucune catégorie de couleur n'est trouvée
-}
+//   return "Autre"; // Si aucune catégorie de couleur n'est trouvée
+// }
 
 
-function afficherCategorieCouleur(couleur) {
-const categorie = classifierCouleur(couleur.red, couleur.green, couleur.blue);
-console.log(`Couleur : R=${couleur.red} G=${couleur.green} B=${couleur.blue}, Catégorie : ${categorie}`);
-}
+ function afficherCategorieCouleur(couleur) {
+ const categorie = rgbToWavelength(couleur.red, couleur.green, couleur.blue);
+ console.log(`Couleur : R=${couleur.red} G=${couleur.green} B=${couleur.blue}, Catégorie : ${categorie}`);
+ }
 
 
 function takepicture() {
