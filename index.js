@@ -108,7 +108,6 @@ function startup() {
       {
         video: {
           deviceId: camera.deviceId,
-          facingMode: ["user", "environment"],
           height: {ideal: 1080},
           width: {ideal: 1920}
         },
