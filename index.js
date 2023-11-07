@@ -204,46 +204,31 @@ function mapValue(value, fromLow, fromHigh, toLow, toHigh) {
   return (value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow;
 }
 
+function playNote(nanometer){
+  const synth = new Tone.Synth().toDestination();
+
+  const SPEED_OF_LIGHT = 299792458; // m/s
+
+  const wavelength = convertToMeter(nanometer);
+
+  const frequency = SPEED_OF_LIGHT / wavelength;
+
+  const frequencyNormalized = normalizeValue(frequency, 405000000000000, 700000000000000, 20, 20000);
+
+  console.error("FREQUENCY :", frequencyNormalized);
+
+  synth.triggerAttackRelease(frequencyNormalized, 0.1);
+}
+
+function convertToMeter(nanometer){
+  return nanometer / 1e9;
+}
+
 // Capture a photo by fetching the current contents of the video
 // and drawing it into a canvas, then converting that to a PNG
 // format data URL. By drawing it on an offscreen canvas and then
 // drawing that to the screen, we can change its size and/or apply
 // other changes before drawing it.
-
-
-function testColorClassification(red, green, blue){
-  const colors = {
-    NOIR : () => {
-      return red < 50 && green < 50 && blue < 50;
-    },
-    BLANC : () => {
-      return red > 230 && green > 230 && blue > 230;
-    },
-    ROUGE : () => {
-      return green + blue < red;
-    },
-    VERT : () => {
-      return red + blue < green;
-    },
-    BLEU : () => {
-      return red + green < blue;
-    },
-    JAUNE : () => {
-      return (red - green < 10 || green - red < 10) && (red - blue > 20 || green - blue > 20);
-    },
-    CYAN : () => {
-      return (blue - green < 10 || green - blue < 10) && (blue - red > 20 || green - red > 20);
-    }
-  }
-
-  for (const color in colors) {
-    if (colors[color]()) {
-      return color;
-    }
-  }
-
-  return "Autre";
-}
 
 
 function testColorClassification(red, green, blue){
@@ -344,9 +329,21 @@ function testColorClassification(red, green, blue){
 
 
  function afficherCategorieCouleur(couleur) {
- const categorie = rgbToWavelength(couleur.red, couleur.green, couleur.blue);
- console.log(`Couleur : R=${couleur.red} G=${couleur.green} B=${couleur.blue}, Catégorie : ${categorie}`);
- }
+  const categorie = rgbToWavelength(couleur.red, couleur.green, couleur.blue);
+  console.log(`Couleur : R=${couleur.red} G=${couleur.green} B=${couleur.blue}, Catégorie : ${categorie}`);
+  playNote(categorie);
+}
+
+function normalizeValue(inputValue, minValue, maxValue, newMinValue, newMaxValue) {
+  if (inputValue < minValue || inputValue > maxValue) {
+    console.error("La valeur d'entrée est en dehors de la plage spécifiée.");
+    return null;
+  }
+  
+  const normalizedValue = (inputValue - minValue) * (newMaxValue - newMinValue) / (maxValue - minValue) + newMinValue;
+  
+  return normalizedValue;
+}
 
 
 function takepicture() {
