@@ -7,6 +7,3 @@ function playPianoNote() {
     console.log("htfhtrhf");
     synth.triggerAttackRelease('C4', '8n');
 }
-
-// Lier la fonction au clic sur l'élément "PIANO"
-document.querySelector('li[onclick="changeGenre(\'PIANO\')"]').addEventListener('click', playPianoNote);
