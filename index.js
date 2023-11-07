@@ -116,18 +116,29 @@ function rgbToWavelength(r, g, b) {
   // Trouver la composante de couleur dominante
   const max = Math.max(red, green, blue);
 
-  // Approximation basée sur la dominante de couleur
+  // Utiliser l'intensité de la couleur dominante pour estimer la longueur d'onde
   if (max === red) {
-    return mapValue(red, 0.0, 1.0, 625, 740); // Rouge
+    return mapValue(red, 0, 1, 625, 740); // Rouge
   } else if (max === green) {
-    return mapValue(green, 0.0, 1.0, 520, 565); // Vert
+    return mapValue(green, 0, 1, 520, 565); // Vert
   } else if (max === blue) {
-    return mapValue(blue, 0.0, 1.0, 450, 500); // Bleu
+    return mapValue(blue, 0, 1, 450, 500); // Bleu
+  } else if (red === green && max === blue) {
+    return mapValue(blue, 0, 1, 430, 450); // Indigo
+  } else if (red === blue && max === green) {
+    return mapValue(green, 0, 1, 500, 520); // Cyan
+  } else if (green === blue && max === red) {
+    return mapValue(red, 0, 1, 590, 625); // Orange
+  } else if (red === green && red === blue) {
+    // Pour le blanc, le noir et les niveaux de gris, il n'y a pas de longueur d'onde unique
+    // Retourner quelque chose d'indicatif, ou gérer différemment
+    return -1; // Indique une erreur ou une absence de longueur d'onde dominante
   }
-  return -1; // En cas de couleur non-monochromatique ou noire
+  // Si c'est une autre couleur non monochromatique
+  return -1; // Indique une erreur ou une absence de longueur d'onde dominante
 }
 
-// Fonction pour mapper une valeur d'un intervalle à un autre
+// La fonction mapValue reste inchangée
 function mapValue(value, fromLow, fromHigh, toLow, toHigh) {
   return (value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow;
 }
