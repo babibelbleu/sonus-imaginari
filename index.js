@@ -106,6 +106,67 @@ function clearphoto() {
   const data = canvas.toDataURL("image/png");
 }
 
+
+function rgbToColorNameAndWavelength(r, g, b) {
+  // Convertir RGB en HSV pour mieux classifier la couleur
+  let hsv = rgbToHsv(r, g, b);
+  let h = hsv[0], s = hsv[1], v = hsv[2];
+
+  let colorName, wavelength;
+
+  // Attribuer un nom de couleur et une longueur d'onde basée sur la teinte (hue)
+  if (h < 30 || h >= 330) {
+    colorName = "Rouge";
+    wavelength = "620-750 nm";
+  } else if (h >= 30 && h < 90) {
+    colorName = "Orange";
+    wavelength = "590-620 nm";
+  } else if (h >= 90 && h < 150) {
+    colorName = "Jaune";
+    wavelength = "570-590 nm";
+  } else if (h >= 150 && h < 210) {
+    colorName = "Vert";
+    wavelength = "495-570 nm";
+  } else if (h >= 210 && h < 270) {
+    colorName = "Bleu";
+    wavelength = "450-495 nm";
+  } else if (h >= 270 && h < 330) {
+    colorName = "Violet";
+    wavelength = "380-450 nm";
+  } else {
+    colorName = "Autre";
+    wavelength = null; // Indéterminé pour les couleurs complexes
+  }
+
+  // Renvoyer l'objet avec le nom de la couleur et la longueur d'onde
+  return { colorName, wavelength };
+}
+
+// Convertisseur RGB vers HSV
+function rgbToHsv(r, g, b) {
+  r /= 255, g /= 255, b /= 255;
+  let max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h, s, v = max;
+  let d = max - min;
+  s = max === 0 ? 0 : d / max;
+  if (max === min) {
+    h = 0; // achromatic
+  } else {
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      case b: h = (r - g) / d + 4; break;
+    }
+    h /= 6;
+  }
+  return [h * 360, s, v];
+}
+
+// Fonction pour mapper une valeur d'un intervalle à un autre
+function mapValue(value, fromLow, fromHigh, toLow, toHigh) {
+  return (value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow;
+}
+
 // Capture a photo by fetching the current contents of the video
 // and drawing it into a canvas, then converting that to a PNG
 // format data URL. By drawing it on an offscreen canvas and then
@@ -113,71 +174,72 @@ function clearphoto() {
 // other changes before drawing it.
 
 // Fonction pour classifier une couleur en catégorie (violet, jaune, etc.)
-function classifierCouleur(red, green, blue) {
-  // Seuils pour différentes couleurs
-  const seuilsCouleurs = {
-    Violet: {
-      red: { min: 60, max: 255 }, 
-      green: { min: 0, max: 100 },
-      blue: { min: 130, max: 255 }
-    },
-    Rouge: {
-      red: { min: 200, max: 255 }, 
-      green: { min: 0, max: 75 },
-      blue: { min: 0, max: 75 } 
-    },
-    Vert: {
-      red: { min: 0, max: 75 },
-      green: { min: 200, max: 255 },
-      blue: { min: 0, max: 75 }
-    },
-    Bleu: {
-      red: { min: 0, max: 75 }, 
-      green: { min: 0, max: 75 },
-      blue: { min: 200, max: 255 }
-    },
-    Jaune: {
-      red: { min: 200, max: 255 },
-      green: { min: 200, max: 255 },
-      blue: { min: 0, max: 75 }
-    },
-    Noir: {
-      red: { min: 0, max: 40 },
-      green: { min: 0, max: 40 },
-      blue: { min: 0, max: 40 }
-    },
-    Rose: {
-      red: { min: 200, max: 255 },
-      green: { min: 100, max: 180 },
-      blue: { min: 150, max: 255 }
-    },
-    Marron: {
-      red: { min: 100, max: 150 },
-      green: { min: 50, max: 100 },
-      blue: { min: 0, max: 50 }
-    }
-  };
+// function classifierCouleur(red, green, blue) {
+//   // Seuils pour différentes couleurs
+//   const seuilsCouleurs = {
+//     Violet: {
+//       red: { min: 60, max: 255 }, 
+//       green: { min: 0, max: 100 },
+//       blue: { min: 130, max: 255 }
+//     },
+//     Rouge: {
+//       red: { min: 200, max: 255 }, 
+//       green: { min: 0, max: 75 },
+//       blue: { min: 0, max: 75 } 
+//     },
+//     Vert: {
+//       red: { min: 0, max: 75 },
+//       green: { min: 200, max: 255 },
+//       blue: { min: 0, max: 75 }
+//     },
+//     Bleu: {
+//       red: { min: 0, max: 75 }, 
+//       green: { min: 0, max: 75 },
+//       blue: { min: 200, max: 255 }
+//     },
+//     Jaune: {
+//       red: { min: 200, max: 255 },
+//       green: { min: 200, max: 255 },
+//       blue: { min: 0, max: 75 }
+//     },
+//     Noir: {
+//       red: { min: 0, max: 40 },
+//       green: { min: 0, max: 40 },
+//       blue: { min: 0, max: 40 }
+//     },
+//     Rose: {
+//       red: { min: 200, max: 255 },
+//       green: { min: 100, max: 180 },
+//       blue: { min: 150, max: 255 }
+//     },
+//     Marron: {
+//       red: { min: 100, max: 150 },
+//       green: { min: 50, max: 100 },
+//       blue: { min: 0, max: 50 }
+//     }
+//   };
   
 
-  // Parcourez les seuils de couleur et vérifiez si les valeurs RVB sont dans l'une des plages
-  for (const couleur in seuilsCouleurs) {
-    const seuils = seuilsCouleurs[couleur];
-    if (
-      red >= seuils.red.min && red <= seuils.red.max &&
-      green >= seuils.green.min && green <= seuils.green.max &&
-      blue >= seuils.blue.min && blue <= seuils.blue.max
-    ) {
-      return couleur;
-    }
-  }
+//   // Parcourez les seuils de couleur et vérifiez si les valeurs RVB sont dans l'une des plages
+//   for (const couleur in seuilsCouleurs) {
+//     const seuils = seuilsCouleurs[couleur];
+//     if (
+//       red >= seuils.red.min && red <= seuils.red.max &&
+//       green >= seuils.green.min && green <= seuils.green.max &&
+//       blue >= seuils.blue.min && blue <= seuils.blue.max
+//     ) {
+//       return couleur;
+//     }
+//   }
 
-  return "Autre"; // Si aucune catégorie de couleur n'est trouvée
-}
+//   return "Autre"; // Si aucune catégorie de couleur n'est trouvée
+// }
 
+function afficherCategorieCouleur(rgb) {
+  const { colorName, wavelength } = rgbToColorNameAndWavelength(rgb.red, rgb.green, rgb.blue);
+  const categorie = wavelength ? `Longueur d'onde approximative : ${wavelength}` : colorName;
+  console.log(`Couleur : R=${rgb.red} G=${rgb.green} B=${rgb.blue}, Catégorie : ${categorie}, Nom de la couleur : ${colorName}`);
 
-function afficherCategorieCouleur(couleur) {
-const categorie = classifierCouleur(couleur.red, couleur.green, couleur.blue);
-console.log(`Couleur : R=${couleur.red} G=${couleur.green} B=${couleur.blue}, Catégorie : ${categorie}`);
 }
 
 
