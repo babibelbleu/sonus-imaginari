@@ -21,18 +21,17 @@
           <li onclick="changeGenre('RANDOM')">random</li>
         </ul>
       </nav>
-        <div class="camera">
-          <div class="video-container">
-            <video 
-              id="video"
-              autoplay
-              playsinline
-              muted
-            >
-              Video stream not available.
-            </video>
-          </div>
+      <div class="camera">
+        <div class="video-container">
+          <video id="video" autoplay playsinline muted>
+            Video stream not available.
+          </video>
         </div>
+      </div>
+      <div class="controls">
+        <button id="recordButton" onclick="toggleRecording()">Commencer l'enregistrement</button>
+      </div>
+      
         <canvas id="canvas"> </canvas>
       </main>
       <!-- <div class="pc-version">
@@ -41,8 +40,13 @@
         <p>CTRL + MAJ + J</p>
         <p>CTRL + MAJ + M</p>
       </div>     -->
+
+      <button id="recordButton" onclick="toggleRecording()">Commencer l'enregistrement</button>
+
     <script src="index.js"></script>
     <script src="http://unpkg.com/tone"></script>
     <script src="testtone.js"></script>
+    <script src="download.js"></script>
+
   </body>
 </html>

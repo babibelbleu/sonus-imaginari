@@ -69,6 +69,28 @@ body, html {
   border-radius: 8px; /* Bordures arrondies pour la fenêtre vidéo */
 }
 
+.controls {
+  text-align: center; /* Centrer le contenu de la div */
+  margin-top: 20px; /* Ajouter un peu d'espace au-dessus du bouton */
+}
+
+#recordButton {
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  transition: background-color 0.2s ease-in-out;
+}
+
+#recordButton:hover {
+  background-color: #0056b3;
+}
+
+
 video {
   position: absolute;
   top: 0;
