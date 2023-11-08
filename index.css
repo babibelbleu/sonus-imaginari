@@ -9,35 +9,36 @@ body, html {
   width: 100%;
   height: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); /* Un arrière-plan en dégradé doux */
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
 .main-page {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Alignement au début pour laisser de l'espace pour la barre de navigation */
+  justify-content: flex-start;
   min-height: 100vh;
-  padding-top: 60px; /* Espace pour la barre de navigation fixe */
+  padding-top: 60px;
 }
 
 /* Style de la barre de navigation */
 #nav-bar {
-  background-color: #2c3e50; /* Couleur de fond sombre pour la barre de navigation */
+  background-color: #8B4513; /* Couleur de fond marron pour la barre de navigation */
   color: white;
   width: 100%;
   padding: 10px 0;
-  position: fixed; /* Fixée en haut de l'écran */
+  position: fixed;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Ombre pour un effet de profondeur */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .navigation-links {
   list-style: none;
   display: flex;
-  justify-content: center; /* Centrage horizontal des éléments de navigation */
+  justify-content: flex-start; /* Alignement à gauche des éléments de navigation */
   align-items: center;
+  padding-left: 10px;
 }
 
 .navigation-links li {
@@ -48,30 +49,29 @@ body, html {
 }
 
 .navigation-links li:hover, .navigation-links li:active {
-  color: #18bc9c; /* Changement de couleur lors du survol ou de l'activation */
+  color: #18bc9c;
 }
 
-/* Style pour la zone vidéo */
 .camera {
   margin: 20px 0;
   padding: 10px;
-  width: 80%; /* Largeur adaptée aux écrans de PC */
-  max-width: 720px; /* Largeur maximale pour ne pas devenir trop grand sur les grands écrans */
+  width: 80%;
+  max-width: 720px;
 }
 
 .video-container {
   position: relative;
-  padding-bottom: 56.25%; /* Ratio 16:9 */
+  padding-bottom: 56.25%;
   height: 0;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Ombre pour un effet de profondeur */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   background-color: #000;
-  border-radius: 8px; /* Bordures arrondies pour la fenêtre vidéo */
+  border-radius: 8px;
 }
 
 .controls {
-  text-align: center; /* Centrer le contenu de la div */
-  margin-top: 20px; /* Ajouter un peu d'espace au-dessus du bouton */
+  text-align: center;
+  margin-top: 20px;
 }
 
 #recordButton {
@@ -90,7 +90,6 @@ body, html {
   background-color: #0056b3;
 }
 
-
 video {
   position: absolute;
   top: 0;
@@ -103,12 +102,11 @@ canvas {
   display: none;
 }
 
-/* Style pour les icônes en haut */
 .top-icons {
   display: flex;
-  justify-content: flex-end; /* Alignement à droite pour les icônes */
+  justify-content: flex-end;
   position: absolute;
-  top: 10px; /* Un peu de marge par rapport au haut de la fenêtre vidéo */
+  top: 10px;
   right: 10px;
 }
 
@@ -124,39 +122,48 @@ canvas {
   transform: scale(1.2);
 }
 
-/* Styles spécifiques pour les écrans d'ordinateur */
 @media (min-width: 1080px) {
   .navigation-links li {
-    margin: 0 20px; /* Plus d'espace entre les liens pour les grands écrans */
+    margin: 0 20px;
   }
 
   .camera {
-    width: 60%; /* Largeur réduite pour une meilleure proportionnalité sur les grands écrans */
+    width: 60%;
   }
 }
 
-/* Styles pour les appareils mobiles */
 @media (max-width: 768px) {
   .navigation-links {
-    flex-direction: column; /* Liens en colonne sur les petits écrans */
+    flex-direction: column;
     padding: 20px 0;
   }
 
   .navigation-links li {
-    margin-bottom: 10px; /* Espace vertical entre les liens */
+    margin-bottom: 10px;
     text-align: center;
-    width: 100%; /* Les liens prennent toute la largeur disponible */
+    width: 100%;
   }
 
   .camera {
-    width: 95%; /* Largeur presque complète pour les appareils mobiles pour une meilleure visibilité */
+    width: 95%;
   }
 
   .video-container {
-    padding-bottom: 75%; /* Ratio plus élevé pour un affichage plus haut sur les mobiles */
+    padding-bottom: 75%;
   }
 
   .top-icons {
-    display: none; /* Les icônes pourraient être masquées sur mobile pour plus de simplicité */
+    display: none;
   }
+}
+
+/* Style pour le rectangle de la caméra */
+.camera-indicator {
+  position: fixed;
+  width: 100px;
+  height: 60px;
+  background-color: #000;
+  border: 2px solid #fff;
+  top: 50px;
+  left: 20px;
 }
