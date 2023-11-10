@@ -1,177 +1,357 @@
+const NOTES_FOLDER_NAME = "notes"
+const NOTE_EXTENSION = ".wav"
+
+const GENRES = ["PIANO", "LOFI"];
+
+let genre_index = 0;
+
+let notes = {
+  DO : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/DO${NOTE_EXTENSION}`,
+  RE : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/RE${NOTE_EXTENSION}`,
+  MI : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/MI${NOTE_EXTENSION}`,
+  FA : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/FA${NOTE_EXTENSION}`,
+  SOL :`"./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/SOL${NOTE_EXTENSION}`,
+  LA : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/LA${NOTE_EXTENSION}`,
+  SI : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/SI${NOTE_EXTENSION}`
+}
+
+// On charge le service worker, utile pour le téléchargement du site web à l'aide du manifest.json
 window.addEventListener("load", () => {
   if("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./serviceworker.js");
   }
 });
-// The width and height of the captured photo. We will set the
-// width to the value defined here, but the height will be
-// calculated based on the aspect ratio of the input stream.
 
-const width = 320; // We will scale the photo width to this
+/**
+ * Largeur de la vidéo
+ */
+const width = 320;
+
+/**
+ * Hauteur de la vidéo
+*/
 let height = 0; // This will be computed based on the input stream
 
-// |streaming| indicates whether or not we're currently streaming
-// video from the camera. Obviously, we start at false.
-
+/**
+ * Booléen qui permet de savoir si le flux vidéo est en cours de lecture
+ */
 let streaming = false;
 
-// The various HTML elements we need to configure or control. These
-// will be set by the startup() function.
-
+// Éléments HTML de la page utiles pour le code
 let video = null;
 let canvas = null;
 let photo = null;
-let startbutton = null;
 
 let navbar = null;
 
-function showViewLiveResultButton() {
+/**
+ * Fonction qui permet de savoir si le site est chargé dans un iframe ou non
+ * 
+ * @returns {boolean} false si le site est chargé dans un iframe, true sinon
+ */
+function isInTopWindow() {
+  // si le site est chargé dans un iframe, on affiche un bouton pour ouvrir le site dans un nouvel onglet
+  // pour éviter les problèmes de permission
   if (window.self !== window.top) {
-    // Ensure that if our document is in a frame, we get the user
-    // to first open it in its own tab or window. Otherwise, it
-    // won't be able to request permission for camera access.
     document.querySelector(".main-page").remove();
     const button = document.createElement("button");
-    button.textContent = "View live result of the example code above";
+    const text = document.createElement("span");
+    text.textContent = "Vous devez ouvrir le site dans un nouvel onglet pour pouvoir l'utiliser.";
+    button.textContent = "Ouvrir le site dans un nouvel onglet";
+    document.body.append(text);
     document.body.append(button);
     button.addEventListener("click", () => window.open(location.href));
-    return true;
+    return false;
   }
-  return false;
+  return true;
 }
 
+/**
+ * Fonction qui permet de changer le genre de musique
+ * lorsque l'on clique sur un bouton du menu déroulant
+ * 
+ * @param {"PIANO" | "LOFI" | "RANDOM"} name Le nom du genre de musique
+ */
+function changeGenre(name){
+
+  // On récupère l'index du genre de musique
+  // ou on le génère aléatoirement
+  if(name === "RANDOM"){
+    genre_index = Math.floor(Math.random() * GENRES.length);
+  } else {
+    genre_index = GENRES.indexOf(name);
+  }
+
+  // On charge la nouvelle liste de notes
+  notes = {
+    DO : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/DO${NOTE_EXTENSION}`,
+    RE : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/RE${NOTE_EXTENSION}`,
+    MI : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/MI${NOTE_EXTENSION}`,
+    FA : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/FA${NOTE_EXTENSION}`,
+    SOL :`"./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/SOL${NOTE_EXTENSION}`,
+    LA : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/LA${NOTE_EXTENSION}`,
+    SI : `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/SI${NOTE_EXTENSION}`
+  }
+
+  // On ferme le menu déroulant
+  closeMenu();
+}
+
+/**
+ * Fonction de démarrage de l'application
+ */
 function startup() {
 
+  // On récupère la navbar
   navbar = document.getElementById("nav-bar");
 
+  // On ne l'affiche pas par défaut
   navbar.style.display = "none";
 
-  if (showViewLiveResultButton()) {
+  // Si le site est chargé dans un iframe, on ne fait rien
+  if (!isInTopWindow()) {
     return;
   }
+
+  // On charge les éléments HTML
   video = document.getElementById("video");
   canvas = document.getElementById("canvas");
-  startbutton = document.getElementById("startbutton");
 
-  navigator.mediaDevices
-    .getUserMedia({ video: true, audio: false })
+  // On demande l'autorisation d'utiliser la caméra
+  // en parcourant les différents périphériques
+  navigator.mediaDevices.enumerateDevices().then(devices => {
+
+    // On retire de la liste les caméras qui ne sont pas fonctionnelles
+    // (si on a téléchargé des logiciels qui créent des sources vidéo tels que OBS et DroidCam)
+    const CAM_NAME_BLACKLIST = ["Droid", "OBS"];
+  
+    // On récupère les caméras en filtrant les périphériques qui ne sont pas des caméras et en retirant les caméras qui ne sont pas fonctionnelles
+    const cameras = devices.filter((device) => device.kind === 'videoinput').filter((camera) => camera.label && !CAM_NAME_BLACKLIST.some((name) => camera.label.includes(name)));
+
+    // Si il n'y a pas de caméra, on affiche un message d'erreur
+    if (cameras.length === 0) {
+      console.error("No camera found on this device.")
+    }
+
+    console.log("CAMERAS :", cameras);
+
+    // On récupère la dernière caméra de la liste
+    // qui est la caméra arrière du téléphone
+    const camera = cameras[cameras.length - 1];
+
+    /** On demande l'autorisation d'utiliser la caméra avec les contraintes suivantes :
+      - la caméra arrière
+      - une résolution de 1920x1080
+      - on ne demande pas l'audio
+      - on lance la vidéo automatiquement
+      - on joue la vidéo dans la page et pas dans un nouvel onglet 
+    */
+    navigator.mediaDevices
+    .getUserMedia(
+      {
+        video: {
+          deviceId: camera.deviceId,
+          height: {ideal: 1080},
+          width: {ideal: 1920}
+        },
+        audio: false,
+        autoplay: true,
+        playinline: true
+      })
+    // Si on a l'autorisation, on lance la vidéo
     .then((stream) => {
       video.srcObject = stream;
       video.play();
     })
     .catch((err) => {
-      console.error(`An error occurred: ${err}`);
+      console.error(`Il y a eu une erreur: ${err}`);
     });
 
-  video.addEventListener(
-    "canplay",
-    (ev) => {
-      if (!streaming) {
-        height = video.videoHeight / (video.videoWidth / width);
+    video.addEventListener(
+      "canplay",
+      (ev) => {
+        if (!streaming) {
+          // On fait en sorte que la caméra prenne tout l'écran
+          height = video.videoHeight / (video.videoWidth / width);
 
-        // Firefox currently has a bug where the height can't be read from
-        // the video, so we will make assumptions if this happens.
 
-        if (isNaN(height)) {
-          height = width / (4 / 3);
+          // Firefox a des problèmes pour lire les données de la hauteur de la caméra
+          // On utilise donc une valeur par défaut
+          if (isNaN(height)) {
+            height = width / (4 / 3);
+          }
+
+          video.setAttribute("width", width);
+          video.setAttribute("height", height);
+          canvas.setAttribute("width", width);
+          canvas.setAttribute("height", height);
+          streaming = true;
         }
+      },
+      false,
+    );
 
-        video.setAttribute("width", width);
-        video.setAttribute("height", height);
-        canvas.setAttribute("width", width);
-        canvas.setAttribute("height", height);
-        streaming = true;
-      }
-    },
-    false,
-  );
-
-  startbutton.addEventListener(
-    "click",
-    (ev) => {
-      takepicture();
-      ev.preventDefault();
-    },
-    false,
-  );
-
-  clearphoto();
+    // Dans certains cas le canvas est déjà affiché
+    // on l'efface donc
+    clearphoto();
+  });
 }
 
+/**
+ * Fonction qui permet de vider le canvas associé à l'image prise.
+ * 
+ * On l'utilise pour éviter la superposition d'images et les bugs liés à la détection de couleur.
+ */
 function clearphoto() {
+
+  // on récupère le canvas
   const context = canvas.getContext("2d");
+
   context.fillStyle = "#AAA";
+
+  // On remplit le canvas avec une couleur
   context.fillRect(0, 0, canvas.width, canvas.height);
-
-  const data = canvas.toDataURL("image/png");
 }
 
 
-function rgbToColorNameAndWavelength(r, g, b) {
-  // Convertir RGB en HSV pour mieux classifier la couleur
-  let hsv = rgbToHsv(r, g, b);
-  let h = hsv[0], s = hsv[1], v = hsv[2];
+/**
+ * Fonction qui permet de convertir une couleur RGB en longueur d'onde
+ * 
+ * @param {number} r La valeur de la composante rouge
+ * @param {number} g La valeur de la composante verte
+ * @param {number} b La valeur de la composante bleue
+ * 
+ * @returns {number} La longueur d'onde de la couleur
+ */
+function rgbToWavelength(r, g, b) {
+  // On normalise les composants RGB entre 0 et 1
+  const red = r / 255;
+  const green = g / 255;
+  const blue = b / 255;
 
-  let colorName, wavelength;
+  // On cherche la composante de la couleur dominante
+  const max = Math.max(red, green, blue);
 
-  // Attribuer un nom de couleur et une longueur d'onde basée sur la teinte (hue)
-  if (h < 30 || h >= 330) {
-    colorName = "Rouge";
-    wavelength = "620-750 nm";
-  } else if (h >= 30 && h < 90) {
-    colorName = "Orange";
-    wavelength = "590-620 nm";
-  } else if (h >= 90 && h < 150) {
-    colorName = "Jaune";
-    wavelength = "570-590 nm";
-  } else if (h >= 150 && h < 210) {
-    colorName = "Vert";
-    wavelength = "495-570 nm";
-  } else if (h >= 210 && h < 270) {
-    colorName = "Bleu";
-    wavelength = "450-495 nm";
-  } else if (h >= 270 && h < 330) {
-    colorName = "Violet";
-    wavelength = "380-450 nm";
-  } else {
-    colorName = "Autre";
-    wavelength = null; // Indéterminé pour les couleurs complexes
+  // On utilise l'intensité de la couleur dominante pour estimer la longueur d'onde
+  if (max === red) {
+    return normalizeValue(red, 0, 1, 625, 740); // Rouge
+  } else if (max === green) {
+    return normalizeValue(green, 0, 1, 520, 565); // Vert
+  } else if (max === blue) {
+    return normalizeValue(blue, 0, 1, 450, 500); // Bleu
+  } else if (red === green && max === blue) {
+    return normalizeValue(blue, 0, 1, 430, 450); // Indigo
+  } else if (red === blue && max === green) {
+    return normalizeValue(green, 0, 1, 500, 520); // Cyan
+  } else if (green === blue && max === red) {
+    return normalizeValue(red, 0, 1, 590, 625); // Orange
+  } else if (red === green && red === blue) {
+
+    // Pour le blanc, le noir et les niveaux de gris, il n'y a pas de longueur d'onde unique
+    // On l'indique donc en retournant -1
+    return -1;
   }
 
-  // Renvoyer l'objet avec le nom de la couleur et la longueur d'onde
-  return { colorName, wavelength };
+  // Si c'est une couleur non monochromatique
+  return -1;
 }
 
-// Convertisseur RGB vers HSV
-function rgbToHsv(r, g, b) {
-  r /= 255, g /= 255, b /= 255;
-  let max = Math.max(r, g, b), min = Math.min(r, g, b);
-  let h, s, v = max;
-  let d = max - min;
-  s = max === 0 ? 0 : d / max;
-  if (max === min) {
-    h = 0; // achromatic
-  } else {
-    switch (max) {
-      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-      case g: h = (b - r) / d + 2; break;
-      case b: h = (r - g) / d + 4; break;
-    }
-    h /= 6;
+/**
+ * Fonction qui permet de normaliser une valeur entre deux plages
+ * 
+ * @param {number} inputValue La valeur à normaliser
+ * @param {number} minValue La valeur minimale de la plage d'entrée
+ * @param {number} maxValue La valeur maximale de la plage d'entrée
+ * @param {number} newMinValue La valeur minimale de la plage de sortie
+ * @param {number} newMaxValue La valeur maximale de la plage de sortie
+ */
+function normalizeValue(inputValue, minValue, maxValue, newMinValue, newMaxValue) {
+  if (inputValue < minValue || inputValue > maxValue) {
+    console.error("La valeur d'entrée est en dehors de la plage spécifiée.");
+    return null;
   }
-  return [h * 360, s, v];
+  
+  const normalizedValue = (inputValue - minValue) * (newMaxValue - newMinValue) / (maxValue - minValue) + newMinValue;
+  
+  return normalizedValue;
 }
 
-// Fonction pour mapper une valeur d'un intervalle à un autre
-function mapValue(value, fromLow, fromHigh, toLow, toHigh) {
-  return (value - fromLow) * (toHigh - toLow) / (fromHigh - fromLow) + toLow;
+/**
+ * Fonction qui permet de jouer une note en fonction de la longueur d'onde
+ * et qui convertit la longueur d'onde en fréquence.
+ * 
+ * @param {number} nanometer La longueur d'onde de la couleur en nanomètres
+ */
+function playNote(nanometer){
+
+  // Création du synthétiseur
+  const synth = new Tone.Synth().toDestination();
+
+  /**
+   * Vitesse de la lumière en m/s
+   */
+  const SPEED_OF_LIGHT = 299792458;
+
+  // On convertit la longueur d'onde en mètres
+  const wavelength = convertToMeter(nanometer);
+
+  // On calcule la fréquence de la note
+  const frequency = SPEED_OF_LIGHT / wavelength;
+
+  // On normalise la fréquence pour qu'elle soit dans la plage audible
+  // car la formule scientifique précédente donne une fréquence en THz
+  const frequencyNormalized = normalizeValue(frequency, 405000000000000, 700000000000000, 20, 20000);
+
+  console.error("FREQUENCY :", frequencyNormalized);
+
+  // On joue la note pour une durée de 0.1s
+  synth.triggerAttackRelease(frequencyNormalized, 0.1);
 }
 
-// Capture a photo by fetching the current contents of the video
-// and drawing it into a canvas, then converting that to a PNG
-// format data URL. By drawing it on an offscreen canvas and then
-// drawing that to the screen, we can change its size and/or apply
-// other changes before drawing it.
+/**
+ * Fonction qui permet de convertir une longueur d'onde en mètres
+ * 
+ * @param {number} nanometer La longueur d'onde en nanomètres
+ * 
+ * @returns {number} La longueur d'onde en mètres
+ */
+function convertToMeter(nanometer){
+  return nanometer / 1e9;
+}
+
+// function testColorClassification(red, green, blue){
+//   const colors = {
+//     NOIR : () => {
+//       return red < 50 && green < 50 && blue < 50;
+//     },
+//     BLANC : () => {
+//       return red > 230 && green > 230 && blue > 230;
+//     },
+//     ROUGE : () => {
+//       return green + blue < red;
+//     },
+//     VERT : () => {
+//       return red + blue < green;
+//     },
+//     BLEU : () => {
+//       return red + green < blue;
+//     },
+//     JAUNE : () => {
+//       return (red - green < 10 || green - red < 10) && (red - blue > 20 || green - blue > 20);
+//     },
+//     CYAN : () => {
+//       return (blue - green < 10 || green - blue < 10) && (blue - red > 20 || green - red > 20);
+//     }
+//   }
+
+//   for (const color in colors) {
+//     if (colors[color]()) {
+//       return color;
+//     }
+//   }
+
+//   return "Autre";
+// }
 
 // Fonction pour classifier une couleur en catégorie (violet, jaune, etc.)
 // function classifierCouleur(red, green, blue) {
@@ -235,21 +415,42 @@ function mapValue(value, fromLow, fromHigh, toLow, toHigh) {
 //   return "Autre"; // Si aucune catégorie de couleur n'est trouvée
 // }
 
-function afficherCategorieCouleur(rgb) {
-  const { colorName, wavelength } = rgbToColorNameAndWavelength(rgb.red, rgb.green, rgb.blue);
-  const categorie = wavelength ? `Longueur d'onde approximative : ${wavelength}` : colorName;
-  console.log(`Couleur : R=${rgb.red} G=${rgb.green} B=${rgb.blue}, Catégorie : ${categorie}, Nom de la couleur : ${colorName}`);
-
+/**
+ * Fonction qui permet d'afficher la catégorie de couleur d'une couleur
+ * et qui joue sa fréquence associée.
+ * 
+ * @param {{red: number, green: number, blue: number}} couleur La couleur à analyser
+ * 
+ * @returns {void}
+ */
+function afficherCategorieCouleur(couleur) {
+  const categorie = rgbToWavelength(couleur.red, couleur.green, couleur.blue);
+  console.log(`Couleur : R=${couleur.red} G=${couleur.green} B=${couleur.blue}, Catégorie : ${categorie}`);
+  playNote(categorie);
 }
 
 
-function takepicture() {
+/**
+ * Fonction qui permet de "prendre une photo" dans le canvas et de
+ * jouer la note associée.
+ */
+function takePicture() {
+
+  // On récupère le canvas
   const context = canvas.getContext("2d");
+
+  // On vérifie qu'on a bien défini la largeut et la hauteur
   if (width && height) {
     canvas.width = width;
     canvas.height = height;
+
+    // On dessine l'image prise de la vidéo dans le canvas
     context.drawImage(video, 0, 0, width, height);
+
+    // On récupère les données de l'image (le rgb de chaque pixel)
     const colors = context.getImageData(0, 0, width, height).data;
+
+    // On met les valeurs de rgb dans un tableau pour mieux les identifier
     const rgbValues = [];
     for (let i = 0; i < colors.length; i += 4) {
         const red = colors[i];
@@ -258,18 +459,25 @@ function takepicture() {
         const alpha = colors[i + 3];
         rgbValues.push({ red, green, blue, alpha });
     }
+
+    // On prend la valeur rgb centrale de l'image
     const couleurAnalyser = (colors.length / 4) / 2;
     
     console.log(rgbValues[couleurAnalyser])
 
-    // Classification et affichage de la catégorie de couleur
+    // Affichage de la catégorie de couleur et lecture de la note associée
     afficherCategorieCouleur(rgbValues[couleurAnalyser]);
   } else {
+    // Si la largeur et la hauteur ne sont pas définies, on efface le canvas
     clearphoto();
   }
 }
 
+/**
+ * Fonction qui permet de faire apparaître le menu déroulant
+ */
 function switchMenu() {
+  console.log("switch menu");
   if (navbar.style.display === "none") {
     // make smooth transition
     navbar.style.display = "block";
@@ -278,6 +486,9 @@ function switchMenu() {
   }
 }
 
+/**
+ * Fonction qui permet de fermer le menu déroulant
+ */
 function closeMenu(){
   navbar.classList.remove("nav-bar-open");
   navbar.classList.add("nav-bar-close");
@@ -286,8 +497,7 @@ function closeMenu(){
   }, 500);
 }
 
-// Set up our event listener to run the startup process
-// once loading is complete.
+// On lance l'application lorsque la page est chargée
 window.addEventListener("load", startup, false);
 
 //Test browser support
@@ -335,8 +545,8 @@ window.addEventListener("load", startup, false);
 //   //The light will be on as long the track exists
 // }
 
-// Prends une photo toutes les secondes
+// Prends une photo toutes les demi secondes
 // TODO: Raccourcir le temps pour donner une illusion de temps réel
 setInterval(() => {
-  takepicture();
-}, 1000);
+  takePicture();
+}, 500);
