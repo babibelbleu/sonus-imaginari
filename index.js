@@ -49,8 +49,7 @@ function isInTopWindow() {
     document.querySelector(".main-page").remove();
     const button = document.createElement("button");
     const text = document.createElement("span");
-    text.textContent =
-      "Vous devez ouvrir le site dans un nouvel onglet pour pouvoir l'utiliser.";
+    text.textContent = "Vous devez ouvrir le site dans un nouvel onglet pour pouvoir l'utiliser.";
     button.textContent = "Ouvrir le site dans un nouvel onglet";
     document.body.append(text);
     document.body.append(button);
