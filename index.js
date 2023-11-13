@@ -114,28 +114,6 @@ function startup() {
   // en parcourant les différents périphériques
   navigator.mediaDevices.enumerateDevices().then((devices) => {
 
-    // On retire de la liste les caméras qui ne sont pas fonctionnelles
-    // (si on a téléchargé des logiciels qui créent des sources vidéo tels que OBS et DroidCam)
-    const CAM_NAME_BLACKLIST = ["Droid", "OBS"];
-
-    // On récupère les caméras en filtrant les périphériques qui ne sont pas des caméras et en retirant les caméras qui ne sont pas fonctionnelles
-    const cameras = devices
-      .filter((device) => device.kind === "videoinput")
-      .filter(
-        (camera) =>
-          camera.label &&
-          !CAM_NAME_BLACKLIST.some((name) => camera.label.includes(name))
-      );
-
-    // Si il n'y a pas de caméra, on affiche un message d'erreur
-    if (cameras.length === 0) {
-      console.error("No camera found on this device.");
-    }
-
-    // On récupère la dernière caméra de la liste
-    // qui est la caméra arrière du téléphone
-    const camera = cameras[cameras.length - 1];
-
      /** On demande l'autorisation d'utiliser la caméra avec les contraintes suivantes :
       - la caméra arrière
       - une résolution de 1920x1080
@@ -146,7 +124,7 @@ function startup() {
     navigator.mediaDevices
       .getUserMedia({
         video: {
-          deviceId: camera.deviceId,
+          facingMode: 'environment',
           height: { ideal: 1080 },
           width: { ideal: 1920 },
         },
