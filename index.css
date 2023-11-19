@@ -96,6 +96,7 @@ video {
   left: 0;
   width: 100%;
   height: 100%;
+  object-fit: cover; /* Ajout pour assurer la couverture totale du conteneur */
 }
 
 canvas {
@@ -150,15 +151,15 @@ canvas {
   }
 
   .video-container {
-    width: 100%; 
-    height: auto; /* Hauteur automatique pour conserver le rapport d'aspect */
-    padding-bottom: 0; /* Supprime le padding pour éviter tout décalage */
+    width: 100%; /* prend toute la largeur de l'écran */
     position: relative;
+    overflow: hidden;
   }
 
   video {
-    width: 100%; /* Prend toute la largeur du conteneur */
-    height: auto; /* Hauteur automatique pour conserver le rapport d'aspect */
+    width: 100%; /* prend toute la largeur du conteneur */
+    height: 100%; /* prend toute la hauteur du conteneur */
+    object-fit: cover;
   }
 
   .controls {
@@ -174,7 +175,6 @@ canvas {
     display: none;
   }
 }
-
 
 /* Style pour le rectangle de la caméra */
 .camera-indicator {
