@@ -29,10 +29,13 @@
         </div>
       </div>
       <div class="controls">
-        <button id="recordButton" onclick="toggleRecording()">Commencer l'enregistrement</button>
+        <button id="startButton" class="btn-action">Commencer</button>
+        <button id="recordButton" class="btn-action">Commencer l'enregistrement</button>
       </div>
       
         <canvas id="canvas"> </canvas>
+        <div id="iphone-message" style="display: none;">Version iPhone</div>
+
       </main>
       <!-- <div class="pc-version">
         <h1>Vous êtes sur la version ordinateur.</h1><br>
@@ -47,6 +50,8 @@
     <script src="http://unpkg.com/tone"></script>
     <script src="testtone.js"></script>
     <script src="download.js"></script>
+    <script src="camera.js"></script>
+
 
   </body>
 </html>
