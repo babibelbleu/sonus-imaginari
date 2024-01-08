@@ -9,7 +9,7 @@ function toggleCamera() {
       video: {
         facingMode: 'environment',
         aspectRatio: {
-          ideal: 16 / 9
+          exact: 16 / 9
         }
       },
       audio: false,
