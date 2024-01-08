@@ -17,15 +17,14 @@ body, html {
   align-items: center;
   justify-content: flex-start;
   min-height: 100vh;
-  padding-top: 6%; /* Ajusté de 60px en supposant que 60px est 6% de la hauteur du viewport */
+  padding-top: 6%;
 }
 
-/* Style de la barre de navigation */
 #nav-bar {
-  background-color: #8B4513; /* Couleur de fond marron pour la barre de navigation */
+  background-color: #8B4513;
   color: white;
   width: 100%;
-  padding: 1% 0; /* Ajusté de 10px en supposant que 10px est 1% de la largeur du viewport */
+  padding: 1% 0;
   position: fixed;
   top: 0;
   z-index: 1000;
@@ -35,14 +34,14 @@ body, html {
 .navigation-links {
   list-style: none;
   display: flex;
-  justify-content: flex-start; /* Alignement à gauche des éléments de navigation */
+  justify-content: flex-start;
   align-items: center;
-  padding-left: 1%; /* Ajusté de 10px */
+  padding-left: 1%;
 }
 
 .navigation-links li {
-  margin: 0 1.5%; /* Ajusté de 15px */
-  padding: 1%; /* Ajusté de 10px */
+  margin: 0 1.5%;
+  padding: 1%;
   cursor: pointer;
   transition: color 0.3s;
 }
@@ -52,45 +51,20 @@ body, html {
 }
 
 .camera {
-  margin: 2% 0; /* Ajusté de 20px */
-  padding: 1%; /* Ajusté de 10px */
+  margin: 2% 0;
+  padding: 1%;
   width: 80%;
-  max-width: 100%; /* Ajusté pour être en pourcentage */
+  max-width: 100%;
 }
 
 .video-container {
   position: relative;
-  padding-bottom: 56.25%; /* Cette propriété est utilisée pour maintenir un ratio d'aspect, donc elle reste en pourcentage */
+  padding-bottom: 56.25%;
   height: 0;
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   background-color: #000;
-  border-radius: 0.5%; /* Ajusté approximativement de 8px */
-}
-
-.controls {
-  text-align: center;
-  margin-top: 2%; /* Ajusté de 20px */
-  display: flex; /* Utiliser Flexbox pour aligner les boutons */
-  justify-content: center; /* Centrer les boutons horizontalement */
-  gap: 10px; /* Espace entre les boutons */
-}
-
-
-#recordButton {
-  padding: 1% 2%; /* Ajusté de 10px 20px */
-  font-size: 1em;
-  cursor: pointer;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 0.5%; /* Ajusté approximativement de 5px */
-  outline: none;
-  transition: background-color 0.2s ease-in-out;
-}
-
-#recordButton:hover {
-  background-color: #0056b3;
+  width: 100%;
 }
 
 video {
@@ -99,6 +73,31 @@ video {
   left: 0;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+}
+
+.controls {
+  text-align: center;
+  margin-top: 2%;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+#recordButton {
+  padding: 1% 2%;
+  font-size: 1em;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 0.5%;
+  outline: none;
+  transition: background-color 0.2s ease-in-out;
+}
+
+#recordButton:hover {
+  background-color: #0056b3;
 }
 
 canvas {
@@ -109,14 +108,14 @@ canvas {
   display: flex;
   justify-content: flex-end;
   position: absolute;
-  top: 1%; /* Ajusté de 10px */
-  right: 1%; /* Ajusté de 10px */
+  top: 1%;
+  right: 1%;
 }
 
 .icon {
-  width: 3%; /* Ajusté approximativement de 32px */
-  height: 3%; /* Ajusté approximativement de 32px */
-  margin-left: 1%; /* Ajusté de 10px */
+  width: 3%;
+  height: 3%;
+  margin-left: 1%;
   cursor: pointer;
   transition: transform 0.2s ease;
 }
@@ -126,13 +125,13 @@ canvas {
 }
 
 .btn-action {
-  padding: 1% 2%; /* Ajusté de 10px 20px */
+  padding: 1% 2%;
   font-size: 1em;
   cursor: pointer;
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 0.5%; /* Ajusté approximativement de 5px */
+  border-radius: 0.5%;
   outline: none;
   transition: background-color 0.2s ease-in-out;
 }
@@ -143,7 +142,7 @@ canvas {
 
 @media (min-width: 1080px) {
   .navigation-links li {
-    margin: 0 2%; /* Ajusté de 20px */
+    margin: 0 2%;
   }
 
   .camera {
@@ -174,15 +173,4 @@ canvas {
   .top-icons {
     display: none;
   }
-}
-
-/* Style pour le rectangle de la caméra */
-.camera-indicator {
-  position: fixed;
-  width: 100px;
-  height: 60px;
-  background-color: #000;
-  border: 2px solid #fff;
-  top: 50px;
-  left: 20px;
 }
