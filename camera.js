@@ -8,7 +8,6 @@ function toggleCamera() {
     navigator.mediaDevices.getUserMedia({
       video: {
         facingMode: 'environment',
-        aspectRatio: { exact: 1.7777777778 },
         height: { ideal: 1080 },
         width: { ideal: 1920 },
       },
