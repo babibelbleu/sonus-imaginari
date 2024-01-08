@@ -5,7 +5,17 @@ let startButtonElement = null;
 
 function toggleCamera() {
   if (!isCameraActive) {
-    navigator.mediaDevices.getUserMedia({ video: true })
+    navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: 'environment',
+        aspectRatio: { exact: 1.7777777778 },
+        height: { ideal: 1080 },
+        width: { ideal: 1920 },
+      },
+      audio: false,
+      autoplay: true,
+      playinline: true,
+    })
       .then((stream) => {
         videoElement.srcObject = stream;
         videoElement.play();
