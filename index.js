@@ -124,8 +124,7 @@ function startup() {
     navigator.mediaDevices
       .getUserMedia({
         video: {
-          facingMode: 'environment',
-          aspectRatio: { exact: 1.7777777778 }
+          facingMode: 'environment'
         },
         audio: false,
         autoplay: true,
