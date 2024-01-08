@@ -200,35 +200,35 @@ function rgbToWavelength(r, g, b) {
   const blue = b / 255;
 
   // On utilise l'intensité de la couleur dominante pour estimer la longueur d'onde
-if (green + blue < red) {
-  return normalizeValue(green, 0, 1, 520, 565); // Rouge - Dominance du rouge sur les autres couleurs
-} else if (red + blue < green) {
-  return normalizeValue(blue, 0, 1, 450, 500); // Vert - Dominance du vert
-} else if (red + green < blue) {
-  return normalizeValue(red, 0, 1, 625, 740); // Bleu - Dominance du bleu
-// Ajout du jaune et du cyan
-} else if (
-  (red - green < 10 || green - red < 10) &&
-  (red - blue > 20 || green - blue > 20)
-) {
-  if (red > 200 && green > 200 && blue < 100) {
-    return normalizeValue(green, 0, 1, 570, 590); // Jaune - Rouge et vert élevés, bleu faible
+  if (green + blue < red) {
+    return normalizeValue(green, 0, 1, 520, 565); // Rouge - Dominance du rouge sur les autres couleurs
+  } else if (red + blue < green) {
+    return normalizeValue(blue, 0, 1, 450, 500); // Vert - Dominance du vert
+  } else if (red + green < blue) {
+    return normalizeValue(red, 0, 1, 625, 740); // Bleu - Dominance du bleu
+  // Ajout du jaune et du cyan
+  } else if (
+    (red - green < 10 || green - red < 10) &&
+    (red - blue > 20 || green - blue > 20)
+  ) {
+    if (red > 200 && green > 200 && blue < 100) {
+      return normalizeValue(green, 0, 1, 570, 590); // Jaune - Rouge et vert élevés, bleu faible
+    }
+  } else if (
+    (blue - green < 10 || green - blue < 10) &&
+    (blue - red > 20 || green - red > 20)
+  ) {
+    return normalizeValue(blue, 0, 1, 490, 520); // Cyan - Bleu et vert élevés, rouge faible
+  // Ajout du magenta, de l'orange et du violet
+  } else if (red > 150 && blue > 150 && green < 50) {
+    return normalizeValue(red, 0, 1, 380, 450); // Magenta - Rouge et bleu élevés, vert faible
+  } else if (red > 200 && green > 100 && green < 200 && blue < 100) {
+    return normalizeValue(red, 0, 1, 590, 625); // Orange - Rouge très élevé, vert moyen, bleu faible
+  } else if (red > 100 && blue > 100 && green < 75) {
+    return normalizeValue(blue, 0, 1, 400, 450); // Violet - Rouge et bleu élevés, vert très faible
+  } else {
+    return -1; // Pour les autres couleurs (noir, blanc, gris et monochromatique)
   }
-} else if (
-  (blue - green < 10 || green - blue < 10) &&
-  (blue - red > 20 || green - red > 20)
-) {
-  return normalizeValue(blue, 0, 1, 490, 520); // Cyan - Bleu et vert élevés, rouge faible
-// Ajout du magenta, de l'orange et du violet
-} else if (red > 150 && blue > 150 && green < 50) {
-  return normalizeValue(red, 0, 1, 380, 450); // Magenta - Rouge et bleu élevés, vert faible
-} else if (red > 200 && green > 100 && green < 200 && blue < 100) {
-  return normalizeValue(red, 0, 1, 590, 625); // Orange - Rouge très élevé, vert moyen, bleu faible
-} else if (red > 100 && blue > 100 && green < 75) {
-  return normalizeValue(blue, 0, 1, 400, 450); // Violet - Rouge et bleu élevés, vert très faible
-} else {
-  return -1; // Pour les autres couleurs (noir, blanc, gris et monochromatique)
-}
 
 }
 
