@@ -151,21 +151,38 @@ canvas {
   }
 }
 
-@media only screen 
-  and (min-device-width : 375px) 
-  and (max-device-width : 667px) 
-  and (orientation : portrait) { 
-    #iphone-message {
-        display: block;
-        position: fixed;
-        top: 0;
-        width: 100%;
-        background-color: #007bff;
-        color: white;
-        text-align: center;
-        padding: 10px 0;
-        font-size: 1em;
-        z-index: 1001;
-    }
+@media (max-width: 768px) {
+  .navigation-links {
+    flex-direction: column;
+    padding: 20px 0;
+  }
+
+  .navigation-links li {
+    margin-bottom: 10px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .camera {
+    width: 95%;
+  }
+
+  .video-container {
+    padding-bottom: 75%;
+  }
+
+  .top-icons {
+    display: none;
+  }
 }
 
+/* Style pour le rectangle de la caméra */
+.camera-indicator {
+  position: fixed;
+  width: 100px;
+  height: 60px;
+  background-color: #000;
+  border: 2px solid #fff;
+  top: 50px;
+  left: 20px;
+}
