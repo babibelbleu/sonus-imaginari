@@ -7,7 +7,10 @@ function toggleCamera() {
   if (!isCameraActive) {
     navigator.mediaDevices.getUserMedia({
       video: {
-        facingMode: 'environment'
+        facingMode: 'environment',
+        aspectRatio: {
+          ideal: 16 / 9
+        }
       },
       audio: false,
       autoplay: true,
