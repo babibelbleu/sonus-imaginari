@@ -1,6 +1,5 @@
 // camera.js
 
-let isCameraActive = false;
 let videoElement = null;
 let startButtonElement = null;
 

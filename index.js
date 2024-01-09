@@ -80,5 +80,5 @@ window.addEventListener("load", startup, false);
 // Prends une photo toutes les demi secondes
 // TODO: Raccourcir le temps pour donner une illusion de temps réel
 setInterval(() => {
-  takePicture();
+  if(isCameraActive) takePicture()
 }, 500);

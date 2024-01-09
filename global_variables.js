@@ -18,3 +18,13 @@
  let video = null;
  let canvas = null;
  let navbar = null;
+
+ /**
+  * Variable globale qui spécifie si la caméra est
+  * active ou non. Cela permet d'éviter de jouer un son
+  * injouable lorsque la caméra est désactivée
+  * 
+  * @see index.js
+  * @see camera.js
+  */
+ let isCameraActive = false;
