@@ -15,7 +15,7 @@
       </div>
       <nav id="nav-bar" onclick="closeMenu()">
         <ul class="navigation-links">
-          <li onclick="playPianoNote()">PIANO</li>
+          <li onclick="changeGenre('PIANO')">PIANO</li>
           <li onclick="changeGenre('LOFI')">LOFI</li>
           <li onclick="changeGenre('RANDOM')">random</li>
         </ul>
@@ -36,10 +36,18 @@
       <div id="iphone-message" style="display: none;">Version iPhone</div>
     </main>
 
+    <!--
+      Import des différents fichiers afin de simplifier le code
+      Comme on a des variables globales, on n'importe aucun script en defer.
+    -->
+    <script src="global_variables.js"></script>
+    <script src="utils.js"></script>
+    <script src="genre.js"></script>
+    <script src="note_player.js"></script>
+    <script src="color_manager.js"></script>
+    <script src="camera.js"></script>
     <script src="index.js"></script>
     <script src="http://unpkg.com/tone"></script>
-    <script src="testtone.js"></script>
     <script src="download.js"></script>
-    <script src="camera.js"></script>
 </body>
 </html>
