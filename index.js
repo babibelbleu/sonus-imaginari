@@ -23,7 +23,7 @@ const width = 320;
 /**
  * Hauteur de la vidéo
 */
-let height = 0;// This will be computed based on the input stream
+let height = 0;
 
 /**
  * Booléen qui permet de savoir si le flux vidéo est en cours de lecture
@@ -41,7 +41,6 @@ let navbar = null;
  * 
  * @returns {boolean} false si le site est chargé dans un iframe, true sinon
  */
-
 function isInTopWindow() {
   // si le site est chargé dans un iframe, on affiche un bouton pour ouvrir le site dans un nouvel onglet
   // pour éviter les problèmes de permission
@@ -59,7 +58,6 @@ function isInTopWindow() {
   return true;
 }
 
-
 /**
  * Fonction qui permet de changer le genre de musique
  * lorsque l'on clique sur un bouton du menu déroulant
@@ -67,15 +65,13 @@ function isInTopWindow() {
  * @param {"PIANO" | "LOFI" | "RANDOM"} name Le nom du genre de musique
  */
 function changeGenre(name) {
-  // On récupère l'index du genre de musique
-  // ou on le génère aléatoirement
+  // On récupère l'index du genre de musique ou on le génère aléatoirement
   if (name === "RANDOM") {
     genre_index = Math.floor(Math.random() * GENRES.length);
   } else {
     genre_index = GENRES.indexOf(name);
   }
 
-   // On charge la nouvelle liste de notes
   notes = {
     DO: `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/DO${NOTE_EXTENSION}`,
     RE: `./${NOTES_FOLDER_NAME}/${GENRES[genre_index]}/RE${NOTE_EXTENSION}`,
@@ -110,16 +106,15 @@ function startup() {
   video = document.getElementById("video");
   canvas = document.getElementById("canvas");
 
-  // On demande l'autorisation d'utiliser la caméra
-  // en parcourant les différents périphériques
+  // On demande l'autorisation d'utiliser la caméra en parcourant les différents périphériques
   navigator.mediaDevices.enumerateDevices().then((devices) => {
 
      /** On demande l'autorisation d'utiliser la caméra avec les contraintes suivantes :
-      - la caméra arrière
-      - une résolution de 1920x1080
-      - on ne demande pas l'audio
-      - on lance la vidéo automatiquement
-      - on joue la vidéo dans la page et pas dans un nouvel onglet 
+          - la caméra arrière
+          - une résolution de 1920x1080
+          - on ne demande pas l'audio
+          - on lance la vidéo automatiquement
+          - on joue la vidéo dans la page et pas dans un nouvel onglet 
     */
     navigator.mediaDevices
       .getUserMedia({
@@ -162,8 +157,7 @@ function startup() {
       false
     );
 
-    // Dans certains cas le canvas est déjà affiché
-    // donc on l'efface 
+    // Dans certains cas le canvas est déjà affiché, donc on l'efface 
     clearphoto();
   });
 }
@@ -258,7 +252,6 @@ function normalizeValue(
  */
 function playNote(nanometer){
 
-  // Création du synthétiseur
   const synth = new Tone.Synth().toDestination();
 
   /**
@@ -368,7 +361,7 @@ function takePicture() {
 
     console.log(rgbValues[couleurAnalyser]);
 
-    // Affichage de la catégorie de couleur et lecture de la note associée
+    // On affiche la catégorie de couleur et on lis la note associée
     afficherCategorieCouleur(rgbValues[couleurAnalyser]);
   } else {
     clearphoto();

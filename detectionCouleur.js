@@ -1,4 +1,6 @@
-// Carte des couleurs RGB vers les chemins des fichiers audio
+/*
+ Carte des couleurs RGB vers les chemins des fichiers audio
+*/
 const carteCouleurSon = {
     '255,0,0': 'chemin_vers_son_rouge.mp3',         // Rouge
     '0,255,0': 'chemin_vers_son_vert.mp3',          // Vert
@@ -16,13 +18,19 @@ const carteCouleurSon = {
     '75,0,130': 'chemin_vers_son_indigo.mp3',       // Indigo
     '0,128,0': 'chemin_vers_son_vert_fonce.mp3',    // Vert foncé
     '128,0,0': 'chemin_vers_son_rouge_fonce.mp3'    // Rouge foncé
-    // Ajoutez d'autres couleurs et chemins de fichiers audio si nécessaire
 };
 
-// Supposons que cette fonction soit appelée chaque fois qu'une couleur est détectée
+/*
+ Fonction de détection de couleur : 
+  Chaque fois qu'une couleur est détectée on joue le son associer 
+*/
 function quandCouleurDetectee(rgb) {
     jouerSonCouleur(rgb);
 }
+
+/*
+ Fonction de lecture du son associé à la couleur détectée 
+*/
 
 function jouerSonCouleur(rgb) {
     const cleCouleur = rgb.join(",");
@@ -34,5 +42,6 @@ function jouerSonCouleur(rgb) {
         console.log("Pas de son associé à cette couleur.");
     }
 }
-let couleurDetectee = [255, 0, 0]; // Simulez une couleur détectée
+
+let couleurDetectee = [255, 0, 0]; // Simulation d'une couleur détectée
 quandCouleurDetectee(couleurDetectee);

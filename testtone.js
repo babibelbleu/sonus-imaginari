@@ -1,10 +1,13 @@
-// Création d'un synthétiseur
+// Création d'un synthétiseur avec Tone.js
 const synth = new Tone.Synth().toDestination();
 
-// Création d'une destination de flux de médias à partir du contexte audio de Tone.js
+// Récupération du contexte audio
 const audioContext = Tone.getContext();
+
+// Connexion du synthétiseur à la destination de flux de médias
 const dest = audioContext.createMediaStreamDestination();
-synth.connect(dest); // Connectez le synthétiseur à la destination de flux
+synth.connect(dest);
+
 
 // Fonction pour jouer une note de piano
 function playPianoNote() {
@@ -12,5 +15,4 @@ function playPianoNote() {
     synth.triggerAttackRelease('C4', '8n');
 }
 
-// Lier la fonction au clic sur l'élément "PIANO"
 document.querySelector('li[onclick="playPianoNote()"]').addEventListener('click', playPianoNote);
