@@ -52,8 +52,6 @@ function startup() {
           // On fait en sorte que la caméra prenne tout l'écran
           height = video.videoHeight / (video.videoWidth / width);
 
-          // Firefox a des problèmes pour lire les données de la hauteur de la caméra
-          // On utilise donc une valeur par défaut
           if (isNaN(height)) {
             height = width / (4 / 3);
           }
@@ -82,3 +80,8 @@ window.addEventListener("load", startup, false);
 setInterval(() => {
   if(isCameraActive) takePicture()
 }, 500);
+
+function changePage(page) {
+  window.location.href = page;
+}
+
