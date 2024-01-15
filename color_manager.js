@@ -8,32 +8,29 @@
  * @returns {number} La longueur d'onde de la couleur
  */
 function rgbToWavelength(r, g, b) {
-    // On normalise les composants RGB entre 0 et 1
-    const red = r / 255;
-    const green = g / 255;
-    const blue = b / 255;
+
+    const intervalles = {
+        "Rouge": [650, 750],
+        "Orange": [590, 640],
+        "Jaune": [570, 590],
+        "Vert": [495, 570],
+        "Bleu": [450, 495],
+        "Indigo": [420, 450],
+        "Violet": [380, 420],
+        "Rose": [500, 590]
+        // Ajoutez d'autres intervalles selon vos besoins
+    };
+
+    const color = whatColor(r, g, b);
   
-    // On utilise l'intensité de la couleur dominante pour estimer la longueur d'onde
-    if (green + blue < red) {
-      return normalizeValue(green, 0, 1, 520, 565); // Rouge
-    } else if (red + blue < green) {
-      return normalizeValue(blue, 0, 1, 450, 500); // Vert
-    } else if (red + green < blue) {
-      return normalizeValue(red, 0, 1, 625, 740); // Bleu
-    } else if (
-      (red - green < 10 || green - red < 10) &&
-      (red - blue > 20 || green - blue > 20)
-    ) {
-      if (red > 200 && green > 200 && blue < 100) {
-        return normalizeValue(green, 0, 1, 570, 590); // Jaune
-      }
-    } else if (
-      (blue - green < 10 || green - blue < 10) &&
-      (blue - red > 20 || green - red > 20)
-    ) {
-      return normalizeValue(blue, 0, 1, 490, 520); // Cyan
+   // Vérifier si la couleur est dans la liste d'intervalles
+   if (intervalles.hasOwnProperty(color)) {
+        // Choisissez une valeur aléatoire dans l'intervalle
+        var intervalle = intervalles[color];
+        var longueurDonde = Math.floor(Math.random() * (intervalle[1] - intervalle[0] + 1)) + intervalle[0];
+        return longueurDonde;
     } else {
-      return -1; // Pour les autres coleurs (noir, blanc, gris et monochromatique)
+        return "Longueur d'onde non déterminée";
     }
 }
 
@@ -93,6 +90,7 @@ function whatColor(r, g, b){
     const b = couleur.blue;
     
     const categorie = whatColor(r, g, b);
+    const nanometer = rgbToWavelength(r, g, b);
 
     // On affiche en console la catégorie de couleur
     console.log(categorie);
@@ -100,5 +98,9 @@ function whatColor(r, g, b){
     // On affiche dans la console "texte" avec la couleur rgb(r, g, b)
     console.log(`%c texte`, `color: rgb(${r}, ${g}, ${b})`);
 
-    playNote(categorie);
+
+    //normaliser nanometer pour être compris dans l'intervalle audible par l'humain
+    const normalizedNanometer = normalizeValue(nanometer, 380, 750, 20, 20000);
+
+    playNote(normalizedNanometer);
 }
