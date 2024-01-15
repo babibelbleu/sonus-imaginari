@@ -1,62 +1,69 @@
-/**
- * Fonction qui permet de convertir une couleur RGB en longueur d'onde
- * 
- * @param {number} r La valeur de la composante rouge
- * @param {number} g La valeur de la composante verte
- * @param {number} b La valeur de la composante bleue
- * 
- * @returns {number} La longueur d'onde de la couleur
- */
 function rgbToWavelength(r, g, b) {
-  // On normalise les composants RGB entre 0 et 1
+  // Validation des entrées
+  if (![r, g, b].every(val => val >= 0 && val <= 255)) {
+    throw new Error("Les valeurs RGB doivent être comprises entre 0 et 255");
+  }
+
+  // Normalisation des composants RGB entre 0 et 1
   const red = r / 255;
   const green = g / 255;
   const blue = b / 255;
 
-  // On utilise l'intensité de la couleur dominante pour estimer la longueur d'onde
-  if (green + blue < red) {
-      console.log("Rouge");
-      return normalizeValue(green, 0, 1, 520, 565); // Rouge
-  } else if (red + blue < green) {
-      console.log("Vert");
-      return normalizeValue(blue, 0, 1, 450, 500); // Vert
-  } else if (red + green < blue) {
-      console.log("Bleu");
-      return normalizeValue(red, 0, 1, 625, 740); // Bleu
-  } else if (red > 200 && green > 200 && blue < 100) {
-      console.log("Jaune");
-      return normalizeValue(green, 0, 1, 570, 590); // Jaune
-  } else if (red > 200 && green < 100 && blue > 200) {
-      console.log("Magenta");
-      return normalizeValue(red, 0, 1, 380, 450); // Magenta
-  } else if (red > 200 && green < 100 && blue < 100) {
-      console.log("Orange");
-      return normalizeValue(red, 0, 1, 590, 620); // Orange
-  } else if (red < 100 && green < 100 && blue > 200) {
-      console.log("Violet");
-      return normalizeValue(blue, 0, 1, 380, 450); // Violet
-  } else if (blue - green < 10 && green - blue < 10 && red - blue > 20 && red - green > 20) {
-      console.log("Cyan");
-      return normalizeValue(blue, 0, 1, 490, 520); // Cyan
+  // Détermination de la couleur dominante
+  if (red >= green && red >= blue) {
+    return normalizeValue(red, 0, 1, 620, 750); // Rouge
+  } else if (green >= red && green >= blue) {
+    return normalizeValue(green, 0, 1, 495, 570); // Vert
   } else {
-      console.log("Autre couleur (noir, blanc, gris, etc.)");
-      return -1; // Pour les autres couleurs
+    return normalizeValue(blue, 0, 1, 450, 495); // Bleu
   }
 }
 
+function normalizeValue(value, minSource, maxSource, minTarget, maxTarget) {
+  return ((value - minSource) / (maxSource - minSource)) * (maxTarget - minTarget) + minTarget;
+}
 
-/**
- * Fonction qui permet d'afficher la catégorie de couleur d'une couleur
- * et qui joue sa fréquence associée.
- * 
- * @param {{red: number, green: number, blue: number}} couleur La couleur à analyser
- * 
- * @returns {void}
- */
- function afficherCategorieCouleur(couleur) {
-    const categorie = rgbToWavelength(couleur.red, couleur.green, couleur.blue);
-    console.log(
-      `Couleur : R=${couleur.red} G=${couleur.green} B=${couleur.blue}, Catégorie : ${categorie}`
-    );
-    playNote(categorie);
+function afficherCategorieCouleur(couleur) {
+  // Extraction des composantes RGB et calcul de la luminosité
+  const { red, green, blue } = couleur;
+  const luminosite = (0.299 * red) + (0.587 * green) + (0.114 * blue);
+
+  let categorie;
+  // Détection des couleurs spéciales
+  if (luminosite < 30) {
+    categorie = "Noir";
+  } else if (luminosite > 220) {
+    categorie = "Blanc";
+  } else if (red < 50 && green < 50 && blue < 50) {
+    categorie = "Gris";
+  } else if (red > 200 && green > 200 && blue < 50) {
+    categorie = "Jaune";
+  } else if (red > 200 && green < 50 && blue > 200) {
+    categorie = "Violet";
+  } else if (red > 200 && green < 50 && blue < 50) {
+    categorie = "Rouge";
+  } else if (red > 150 && green < 50 && blue < 50) {
+    categorie = "Marron";
+  } else if (red > 200 && green < 80 && blue < 80) {
+    categorie = "Rose";
+  } else if (red > 150 && green > 150 && blue < 50) {
+    categorie = "Doré";
+  } else {
+    // Calcul de la longueur d'onde pour les autres couleurs
+    const wavelength = rgbToWavelength(red, green, blue);
+    if (wavelength >= 620) {
+      categorie = "Rouge";
+    } else if (wavelength >= 495) {
+      categorie = "Vert";
+    } else {
+      categorie = "Bleu";
+    }
+    playNote(wavelength);
+  }
+
+  // Utilisation de CSS dans console.log pour afficher la couleur
+  console.log(
+    `%cCouleur: R=${red} G=${green} B=${blue}, Catégorie: ${categorie}`, 
+    `color: rgb(${red}, ${green}, ${blue});`
+  );
 }
