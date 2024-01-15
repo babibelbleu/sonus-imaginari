@@ -10,21 +10,24 @@
 function rgbToWavelength(r, g, b) {
 
     const intervalles = {
-        "Rouge": [650, 750],
         "Orange": [590, 640],
-        "Jaune": [570, 590],
-        "Vert": [495, 570],
+        "Rose": [500, 590],
+        "Blanc": [400, 750],     // Blanc a une plage de longueurs d'onde étendue
+        "Rouge": [650, 750],
         "Bleu": [450, 495],
-        "Indigo": [420, 450],
-        "Violet": [380, 420],
-        "Rose": [500, 590]
+        "Vert": [495, 570],
+        "Jaune": [570, 590],
+        "Magenta": [380, 500],
+        "Cyan": [490, 520]
         // Ajoutez d'autres intervalles selon vos besoins
     };
 
     const color = whatColor(r, g, b);
-  
+
+
    // Vérifier si la couleur est dans la liste d'intervalles
    if (intervalles.hasOwnProperty(color)) {
+        console.log(color);
         // Choisissez une valeur aléatoire dans l'intervalle
         var intervalle = intervalles[color];
         var longueurDonde = Math.floor(Math.random() * (intervalle[1] - intervalle[0] + 1)) + intervalle[0];
@@ -43,15 +46,13 @@ function whatColor(r, g, b){
     var seuilDominance = 200;
 
     // Seuils pour considérer la composante comme dominante
-    var seuilDominance = 200;
+    var seuilDominance = 150;
     var seuilOrange = 150;
     var seuilRose = 200;
     var seuilBlanc = 230;
 
     // Conditions pour détecter les couleurs
-    if (r < seuilDominance && g < seuilDominance && b < seuilDominance) {
-        return "Noir";
-    } else if (r > seuilOrange && g > 0.5 * r && b < 0.5 * r) {
+    if (r > seuilOrange && g > 0.5 * r && b < 0.5 * r) {
         return "Orange";
     } else if (r > seuilRose && g < 0.7 * r && b < 0.7 * r) {
         return "Rose";
@@ -98,9 +99,10 @@ function whatColor(r, g, b){
     // On affiche dans la console "texte" avec la couleur rgb(r, g, b)
     console.log(`%c texte`, `color: rgb(${r}, ${g}, ${b})`);
 
+    // on normalise la valeur de la longueur d'onde pour qu'elle soit dans la plage audible
+    const nanometerNormalized = normalizeValue(nanometer, 380, 700, 20, 20000);
 
-    //normaliser nanometer pour être compris dans l'intervalle audible par l'humain
-    const normalizedNanometer = normalizeValue(nanometer, 380, 750, 20, 20000);
+    console.error("FREQUENCY :", nanometerNormalized, "nm");
 
-    playNote(normalizedNanometer);
+    playNote(nanometerNormalized);
 }
