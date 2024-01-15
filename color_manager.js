@@ -37,6 +37,47 @@ function rgbToWavelength(r, g, b) {
     }
 }
 
+function estDansIntervalle(valeur, cible, intervalle) {
+    return Math.abs(valeur - cible) <= intervalle;
+}
+
+function whatColor(r, g, b){
+    // Seuil pour considérer la composante rouge comme dominante
+    var seuilDominance = 200;
+
+    // Seuils pour considérer la composante comme dominante
+    var seuilDominance = 200;
+    var seuilOrange = 150;
+    var seuilRose = 200;
+    var seuilBlanc = 230;
+
+    // Conditions pour détecter les couleurs
+    if (r < seuilDominance && g < seuilDominance && b < seuilDominance) {
+        return "Noir";
+    } else if (r > seuilOrange && g > 0.5 * r && b < 0.5 * r) {
+        return "Orange";
+    } else if (r > seuilRose && g < 0.7 * r && b < 0.7 * r) {
+        return "Rose";
+    } else if (r > seuilBlanc && g > seuilBlanc && b > seuilBlanc) {
+        return "Blanc";
+    } else if (r > seuilDominance && r > g && r > b) {
+        return "Rouge";
+    } else if (g > seuilDominance && g > r && g > b) {
+        return "Vert";
+    } else if (b > seuilDominance && b > r && b > g) {
+        return "Bleu";
+    } else if (r > g && r > b) {
+        return "Jaune";
+    } else if (r > g && b > g) {
+        return "Magenta";
+    } else if (g > r && b > r) {
+        return "Cyan";
+    }
+
+    // Si aucune correspondance n'est trouvée
+    return "Couleur non reconnue";
+}
+
 /**
  * Fonction qui permet d'afficher la catégorie de couleur d'une couleur
  * et qui joue sa fréquence associée.
@@ -46,9 +87,18 @@ function rgbToWavelength(r, g, b) {
  * @returns {void}
  */
  function afficherCategorieCouleur(couleur) {
-    const categorie = rgbToWavelength(couleur.red, couleur.green, couleur.blue);
-    console.log(
-      `Couleur : R=${couleur.red} G=${couleur.green} B=${couleur.blue}, Catégorie : ${categorie}`
-    );
+    // const categorie = rgbToWavelength(couleur.red, couleur.green, couleur.blue);
+    const r = couleur.red;
+    const g = couleur.green;
+    const b = couleur.blue;
+    
+    const categorie = whatColor(r, g, b);
+
+    // On affiche en console la catégorie de couleur
+    console.log(categorie);
+
+    // On affiche dans la console "texte" avec la couleur rgb(r, g, b)
+    console.log(`%c texte`, `color: rgb(${r}, ${g}, ${b})`);
+
     playNote(categorie);
 }
