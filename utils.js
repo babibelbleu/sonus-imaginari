@@ -84,3 +84,7 @@ function closeMenu() {
       navbar.style.display = "none";
     }, 500);
 }
+
+function changePage(page) {
+  window.location.href = page;
+}

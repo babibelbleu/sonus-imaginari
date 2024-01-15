@@ -81,7 +81,3 @@ setInterval(() => {
   if(isCameraActive) takePicture()
 }, 500);
 
-function changePage(page) {
-  window.location.href = page;
-}
-
