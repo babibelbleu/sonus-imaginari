@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function () {
  * Fonction de démarrage de l'application
  */
 function startup() {
-  navbar = document.getElementById("nav-bar");
 
   if (!isInTopWindow()) {
     return;
