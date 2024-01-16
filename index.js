@@ -1,32 +1,60 @@
+document.addEventListener('DOMContentLoaded', function () {
+  const menuIcon = document.querySelector('.icon');
+  const navigationMenu = document.querySelector('.navigation-menu');
+
+  menuIcon.addEventListener('click', function () {
+    navigationMenu.classList.toggle('active');
+  });
+
+  const navLinks = document.querySelectorAll('.navigation-links li');
+  navLinks.forEach(link => {
+    link.addEventListener('click', function (event) {
+      event.preventDefault();
+      const genre = this.textContent.trim().toUpperCase();
+      changeGenre(genre);
+    });
+  });
+
+  const aboutLink = document.getElementById('aboutLink');
+  aboutLink.addEventListener('click', function () {
+    window.location.href = 'about.html';
+  });
+
+  const homeLink = document.getElementById('homeLink');
+  homeLink.addEventListener('click', function (event) {
+    event.preventDefault(); 
+    window.location.href = 'index.html';
+  });
+
+  startup();
+
+  setInterval(() => {
+    if (isCameraActive) takePicture();
+  }, 500);
+});
+
+
 /**
  * Fonction de démarrage de l'application
  */
 function startup() {
-   // On récupère la navbar
-  navbar = document.getElementById("nav-bar");
 
-   // On ne l'affiche pas par défaut
-  navbar.style.display = "none";
-
-  // Si le site est chargé dans un iframe, on ne fait rien
   if (!isInTopWindow()) {
     return;
   }
 
-  // On charge les éléments HTML
   video = document.getElementById("video");
   canvas = document.getElementById("canvas");
 
-  // On demande l'autorisation d'utiliser la caméra en parcourant les différents périphériques
   navigator.mediaDevices.enumerateDevices().then((devices) => {
 
-     /** On demande l'autorisation d'utiliser la caméra avec les contraintes suivantes :
-          - la caméra arrière
-          - une résolution de 1920x1080
-          - on ne demande pas l'audio
-          - on lance la vidéo automatiquement
-          - on joue la vidéo dans la page et pas dans un nouvel onglet 
-    */
+    /** On demande l'autorisation d'utiliser la caméra avec les contraintes suivantes :
+         - la caméra arrière
+         - une résolution de 1920x1080
+         - on ne demande pas l'audio
+         - on lance la vidéo automatiquement
+         - on joue la vidéo dans la page et pas dans un nouvel onglet 
+   */
     navigator.mediaDevices
       .getUserMedia({
         video: {
@@ -49,7 +77,6 @@ function startup() {
       "canplay",
       (ev) => {
         if (!streaming) {
-          // On fait en sorte que la caméra prenne tout l'écran
           height = video.videoHeight / (video.videoWidth / width);
 
           if (isNaN(height)) {
@@ -66,18 +93,26 @@ function startup() {
       false
     );
 
-    // Dans certains cas le canvas est déjà affiché, donc on l'efface 
+    // Dans certains cas, le canvas est déjà affiché, donc on l'efface 
     clearphoto();
   });
 }
 
 
 // On lance l'application lorsque la page est chargée
-window.addEventListener("load", startup, false);
+if(ENVIRONMENT != "test") window.addEventListener("load", startup, false);
+if(ENVIRONMENT == "test") window.addEventListener("load", () => {
+  let startButton = document.getElementById("startButton");
+  startButton.addEventListener("click", () => {
+    if(Tone.context.state !== 'running') Tone.start();
+    console.log("Tone context state :", Tone.context.state);
+  });
+});
 
 // Prends une photo toutes les demi secondes
 // TODO: Raccourcir le temps pour donner une illusion de temps réel
 setInterval(() => {
-  if(isCameraActive) takePicture()
-}, 500);
+  if(isCameraActive && ENVIRONMENT != "test") takePicture()
+  if(ENVIRONMENT == "test") takePictureTest()
+}, 100);
 

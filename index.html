@@ -3,42 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test de flux vidéo</title>
+    <title>Sonus Imaginari</title>
     <link rel="stylesheet" href="index.css">
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
+    <header>
+        <nav id="nav-bar">
+            <div class="navbar-logo">
+                <h1>SONUS IMAGINARI</h1>
+            </div>
+            <div class="top-icons">
+                <div class="dropdown">
+                    <img src="icons/burger_menu.svg" alt="Menu de navigation" class="icon" onclick="switchMenu()">
+                    <div class="navigation-menu">
+                        <ul class="navigation-links">
+                            <li id="homeLink" onclick="changePage('index.html')">Accueil</li>
+                            <li id="aboutLink" onclick="changePage('about.html')">À Propos</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="icons/download.svg" alt="Télécharger l'enregistrement" class="icon">
+            </div>
+        </nav>
+    </header>
+
     <main class="main-page">
-      <div class="top-icons">
-        <img src="icons/burger_menu.svg" alt="Menu de navigation" class="icon" onclick="switchMenu()">
-        <img src="icons/download.svg" alt="Télécharger l'enregistrement" class="icon">
-      </div>
-      <nav id="nav-bar" onclick="closeMenu()">
-        <ul class="navigation-links">
-          <li onclick="changePage('home')">Accueil</li>
-          <li onclick="changePage('about.html')">À Propos de nous </li>      
-        </ul>
-      </nav>
-      <div class="camera">
-        <div class="video-container">
-          <video id="video" autoplay playsinline muted>
-            Video stream not available.
-          </video>
+        <div class="camera">
+            <div class="video-container">
+                <video id="video" autoplay playsinline muted>
+                    Video stream not available.
+                </video>
+            </div>
         </div>
-      </div>
-      <div class="controls">
-        <button id="startButton" class="btn-action">Commencer</button>
-        <button id="recordButton" class="btn-action" onclick="toggleRecording()">Commencer l'enregistrement</button>
-      </div>
-      
-      <canvas id="canvas"> </canvas>
-      <div id="iphone-message" style="display: none;">Version iPhone</div>
+
+        <div class="controls">
+            <button id="startButton" class="btn-action">Commencer</button>
+            <span class="button-separator"></span>
+            <button id="recordButton" class="btn-action" onclick="toggleRecording()">Enregistrer</button>
+        </div>
+
+        <canvas id="canvas"></canvas>
+        <div id="iphone-message" style="display: none;">Version iPhone</div>
     </main>
 
-    <!--
+     <!--
       Import des différents fichiers afin de simplifier le code
       Comme on a des variables globales, on n'importe aucun script en defer.
     -->
+    <script src="http://unpkg.com/tone"></script>
     <script src="global_variables.js"></script>
     <script src="utils.js"></script>
     <script src="genre.js"></script>
@@ -46,7 +59,6 @@
     <script src="color_manager.js"></script>
     <script src="camera.js"></script>
     <script src="index.js"></script>
-    <script src="http://unpkg.com/tone"></script>
     <script src="download.js"></script>
 </body>
 </html>

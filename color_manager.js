@@ -1,40 +1,84 @@
 function rgbToWavelength(r, g, b) {
-  // On normalise les composants RGB entre 0 et 1
-  const red = r / 255;
-  const green = g / 255;
-  const blue = b / 255;
 
-  // On utilise l'intensité de la couleur dominante pour estimer la longueur d'onde
-  if (green + blue < red) {
-      console.log("Rouge");
-      return normalizeValue(green, 0, 1, 520, 565); // Rouge
-  } else if (red + blue < green) {
-      console.log("Vert");
-      return normalizeValue(blue, 0, 1, 450, 500); // Vert
-  } else if (red + green < blue) {
-      console.log("Bleu");
-      return normalizeValue(red, 0, 1, 625, 740); // Bleu
-  } else if (red > 200 && green > 200 && blue < 100) {
-      console.log("Jaune");
-      return normalizeValue(green, 0, 1, 570, 590); // Jaune
-  } else if (red > 200 && green < 100 && blue > 200) {
-      console.log("Magenta");
-      return normalizeValue(red, 0, 1, 380, 450); // Magenta
-  } else if (red > 200 && green < 100 && blue < 100) {
-      console.log("Orange");
-      return normalizeValue(red, 0, 1, 590, 620); // Orange
-  } else if (red < 100 && green < 100 && blue > 200) {
-      console.log("Violet");
-      return normalizeValue(blue, 0, 1, 380, 450); // Violet
-  } else if (blue - green < 10 && green - blue < 10 && red - blue > 20 && red - green > 20) {
-      console.log("Cyan");
-      return normalizeValue(blue, 0, 1, 490, 520); // Cyan
-  } else {
-      console.log("Autre couleur (noir, blanc, gris, etc.)");
-      return -1; // Pour les autres couleurs
-  }
+    const intervalles = {
+        "Orange": [590, 640],
+        "Rose": [500, 590],
+        "Blanc": [400, 750],     // Blanc a une plage de longueurs d'onde étendue
+        "Rouge": [650, 750],
+        "Bleu": [450, 495],
+        "Vert": [495, 570],
+        "Jaune": [570, 590],
+        "Magenta": [380, 500],
+        "Cyan": [490, 520]
+        // Ajoutez d'autres intervalles selon vos besoins
+    };
+
+    const color = whatColor(r, g, b);
+
+
+   // Vérifier si la couleur est dans la liste d'intervalles
+   if (intervalles.hasOwnProperty(color)) {
+        console.log(color);
+        // Choisissez une valeur aléatoire dans l'intervalle
+        var intervalle = intervalles[color];
+        var longueurDonde = Math.floor(Math.random() * (intervalle[1] - intervalle[0] + 1)) + intervalle[0];
+        return longueurDonde;
+    } else {
+        return "Longueur d'onde non déterminée";
+    }
 }
 
+function estDansIntervalle(valeur, cible, intervalle) {
+    return Math.abs(valeur - cible) <= intervalle;
+}
+
+function whatColor(r, g, b){
+    // Seuil pour considérer la composante rouge comme dominante
+    var seuilDominance = 200;
+
+    // Seuils pour considérer la composante comme dominante
+    var seuilDominance = 100;
+    var seuilOrange = 150;
+    var seuilRose = 200;
+    var seuilBlanc = 230;
+
+
+    // conditions spécifiques pour les couleurs primaires
+    if(estDansIntervalle(r, 10, 255) && estDansIntervalle(g, 0, 10) && estDansIntervalle(b, 0, 10)){
+        return "Rouge";
+    } else if(estDansIntervalle(r, 0, 10) && estDansIntervalle(g, 10, 255) && estDansIntervalle(b, 0, 10)){
+        return "Vert";
+    } else if(estDansIntervalle(r, 0, 10) && estDansIntervalle(g, 0, 10) && estDansIntervalle(b, 10, 255)){
+        return "Bleu";
+    }
+
+
+    // Conditions pour détecter les couleurs
+    if (r > seuilOrange && g > 0.5 * r && b < 0.5 * r) {
+        return "Orange";
+    } else if (r > seuilRose && g < 0.7 * r && b < 0.7 * r && g > 0.3 * r && b > 0.3 * r) {
+        return "Rose";
+    } else if (r > seuilBlanc && g > seuilBlanc && b > seuilBlanc) {
+        return "Blanc";
+    }  else if ((r > g && r > b) || (r == g && r > b)) {
+        return "Jaune";
+    } else if (r > g && b > g) {
+        return "Magenta";
+    } else if (g > r && b > r) {
+        return "Cyan";
+    } else if (r > seuilDominance && r > g+b - 10) {
+        return "Rouge";
+    } else if (g > seuilDominance && g > r+b - 10) {
+        return "Vert";
+    } else if (b > seuilDominance && b > r+g - 10) {
+        return "Bleu";
+    } else if (r == g && g == b && r > 0 && g > 0 && b > 0) {
+        return "Gris";
+    }
+
+    // Si aucune correspondance n'est trouvée
+    return "Couleur non reconnue";
+}
 
 /**
  * Fonction qui permet d'afficher la catégorie de couleur d'une couleur
