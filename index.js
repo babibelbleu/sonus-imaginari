@@ -87,5 +87,5 @@ if(ENVIRONMENT == "test") window.addEventListener("load", () => {
 setInterval(() => {
   if(isCameraActive && ENVIRONMENT != "test") takePicture()
   if(ENVIRONMENT == "test") takePictureTest()
-}, 500);
+}, 100);
 

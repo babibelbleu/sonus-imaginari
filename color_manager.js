@@ -51,25 +51,38 @@ function whatColor(r, g, b){
     var seuilRose = 200;
     var seuilBlanc = 230;
 
+
+    // conditions spécifiques pour les couleurs primaires
+    if(estDansIntervalle(r, 10, 255) && estDansIntervalle(g, 0, 10) && estDansIntervalle(b, 0, 10)){
+        return "Rouge";
+    } else if(estDansIntervalle(r, 0, 10) && estDansIntervalle(g, 10, 255) && estDansIntervalle(b, 0, 10)){
+        return "Vert";
+    } else if(estDansIntervalle(r, 0, 10) && estDansIntervalle(g, 0, 10) && estDansIntervalle(b, 10, 255)){
+        return "Bleu";
+    }
+
+
     // Conditions pour détecter les couleurs
     if (r > seuilOrange && g > 0.5 * r && b < 0.5 * r) {
         return "Orange";
-    } else if (r > seuilRose && g < 0.7 * r && b < 0.7 * r) {
+    } else if (r > seuilRose && g < 0.7 * r && b < 0.7 * r && g > 0.3 * r && b > 0.3 * r) {
         return "Rose";
     } else if (r > seuilBlanc && g > seuilBlanc && b > seuilBlanc) {
         return "Blanc";
-    } else if (r > seuilDominance && r > g+b) {
-        return "Rouge";
-    } else if (g > seuilDominance && g > r+b) {
-        return "Vert";
-    } else if (b > seuilDominance && b > r+g) {
-        return "Bleu";
-    } else if (r > g && r > b) {
+    }  else if ((r > g && r > b) || (r == g && r > b)) {
         return "Jaune";
     } else if (r > g && b > g) {
         return "Magenta";
     } else if (g > r && b > r) {
         return "Cyan";
+    } else if (r > seuilDominance && r > g+b - 10) {
+        return "Rouge";
+    } else if (g > seuilDominance && g > r+b - 10) {
+        return "Vert";
+    } else if (b > seuilDominance && b > r+g - 10) {
+        return "Bleu";
+    } else if (r == g && g == b && r > 0 && g > 0 && b > 0) {
+        return "Gris";
     }
 
     // Si aucune correspondance n'est trouvée
