@@ -3,32 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>À Propos de Nous - Sonus Imaginari</title>
+    <title>Sonus Imaginari</title>
     <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="about.css">
 </head>
 <body>
-    <nav id="nav-bar">
-        <ul class="navigation-links">
-            <li onclick="changePage('index.html')">Accueil</li>
-            <li onclick="changePage('about')" class="active">À Propos</li>
-        </ul>
-    </nav>
+    <header>
+        <nav id="nav-bar" onclick="closeMenu()">
+            <div class="navbar-logo">
+                <h1>SONUS IMAGINARI</h1>
+            </div>
+            <div class="top-icons">
+                <div class="dropdown">
+                    <img src="icons/burger_menu.svg" alt="Menu de navigation" class="icon" onclick="switchMenu()">
+                    <div class="navigation-menu">
+                        <ul class="navigation-links">
+                            <li id="homeLink"><a href="index.html">Accueil</a></li>
+                            <li id="aboutLink" onclick="changePage('about.html')">À Propos</li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="icons/download.svg" alt="Télécharger l'enregistrement" class="icon">
+            </div>
+        </nav>
+    </header>
 
     <main class="main-page">
-        <section class="about-section">
-            <h1>À Propos de Nous</h1>
-            <p>
-                Sonus Imaginari est une application innovante qui transforme les couleurs en musique, offrant une expérience unique d'interaction entre le visuel et l'auditif.
-            </p>
-            <p>
-                Développée par une équipe passionnée de technologie et d'art, notre mission est de créer une expérience immersive et interactive pour nos utilisateurs.
-            </p>
-            <p>
-                [Ajoutez plus d'informations sur votre équipe, votre mission, l'histoire de votre projet, etc.]
-            </p>
-        </section>
+        <div class="presentation">
+            <h2>Bienvenue sur Sonus Imaginari</h2>
+            <p>Plongez dans une expérience immersive où chaque coup de pinceau, chaque nuance de couleur, se métamorphose en une fréquence unique. Sonus Imaginari transcende les barrières visuelles, offrant un voyage artistique sonore qui éveille les sens et ouvre les portes de l'imagination. 
+              Explorez l'art d'une manière nouvelle et inspirante. Bienvenue sur Sonus Imaginari, où la créativité devient une mélodie et l'art devient une expérience sensorielle inoubliable.</p>
+        </div>
+
+        <div class="about-section">
+            <h2>À Propos de Nous</h2>
+            <p>Bienvenue chez Sonus Imaginari, une équipe passionnée dédiée à créer une expérience artistique sonore unique. Nous sommes fiers de vous présenter les visages derrière notre projet :</p>
+            <p>Notre Équipe se compose de : </p>
+            <li>Bastien</li>
+            <li>Alex</li>
+            <li>Sara</li>
+            <li>Mohammed</li>
+            <li>Djibril</li>
+        </div>
+        <div class="client-section">
+            <h3>Notre Client</h3>
+            <p>Nous avons le plaisir de collaborer avec Ines, notre cliente exceptionnelle. Son engagement envers la créativité et son soutien constant ont été des éléments clés de notre succès.</p>
+        </div>
+
+        <canvas id="canvas"></canvas>
+        <div id="iphone-message" style="display: none;">Version iPhone</div>
     </main>
+
+     <!-- Import des différents fichiers afin de simplifier le code -->
+    <script src="global_variables.js"></script>
     <script src="utils.js"></script>
+    <script src="genre.js"></script>
+    <script src="note_player.js"></script>
+    <script src="color_manager.js"></script>
+    <script src="camera.js"></script>
+    <script src="index.js"></script>
+    <script src="http://unpkg.com/tone"></script>
+    <script src="download.js"></script>
 </body>
 </html>
