@@ -41,7 +41,7 @@
   * - prod
   * - test
   */
-const ENVIRONMENT = "test";
+const ENVIRONMENT = "dev";
 
 /**
  * Couleurs de test
