@@ -80,8 +80,6 @@ function startup() {
         if (!streaming) {
           height = video.videoHeight / (video.videoWidth / width);
 
-          // Firefox a des problèmes pour lire les données de la hauteur de la caméra
-          // On utilise donc une valeur par défaut
           if (isNaN(height)) {
             height = width / (4 / 3);
           }

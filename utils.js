@@ -38,7 +38,7 @@ function normalizeValue(
     newMaxValue
 ) {
     if (inputValue < minValue || inputValue > maxValue) {
-        console.error("La valeur d'entrée est en dehors de la plage spécifiée.");
+        console.error("La valeur d'entrée est en dehors de la plage spécifiée : ", inputValue, " n'est pas compris entre ", minValue, " et ", maxValue, ".");
         return null;
     }
   
@@ -83,4 +83,8 @@ function closeMenu() {
     setTimeout(() => {
       navbar.style.display = "none";
     }, 500);
+}
+
+function changePage(page) {
+  window.location.href = page;
 }
