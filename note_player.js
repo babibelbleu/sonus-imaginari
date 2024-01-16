@@ -5,8 +5,6 @@
  * @param {number} nanometer La longueur d'onde de la couleur en nanomètres
  */
  function playNote(nanometer){
-
-    const synth = new Tone.Synth().toDestination();
   
     /**
      * Vitesse de la lumière en m/s

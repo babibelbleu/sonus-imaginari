@@ -73,11 +73,19 @@ function startup() {
 
 
 // On lance l'application lorsque la page est chargée
-window.addEventListener("load", startup, false);
+if(ENVIRONMENT != "test") window.addEventListener("load", startup, false);
+if(ENVIRONMENT == "test") window.addEventListener("load", () => {
+  let startButton = document.getElementById("startButton");
+  startButton.addEventListener("click", () => {
+    if(Tone.context.state !== 'running') Tone.start();
+    console.log("Tone context state :", Tone.context.state);
+  });
+});
 
 // Prends une photo toutes les demi secondes
 // TODO: Raccourcir le temps pour donner une illusion de temps réel
 setInterval(() => {
-  if(isCameraActive) takePicture()
+  if(isCameraActive && ENVIRONMENT != "test") takePicture()
+  if(ENVIRONMENT == "test") takePictureTest()
 }, 500);
 
