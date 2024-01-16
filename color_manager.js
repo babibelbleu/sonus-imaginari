@@ -46,7 +46,7 @@ function whatColor(r, g, b){
     var seuilDominance = 200;
 
     // Seuils pour considérer la composante comme dominante
-    var seuilDominance = 150;
+    var seuilDominance = 100;
     var seuilOrange = 150;
     var seuilRose = 200;
     var seuilBlanc = 230;
@@ -58,11 +58,11 @@ function whatColor(r, g, b){
         return "Rose";
     } else if (r > seuilBlanc && g > seuilBlanc && b > seuilBlanc) {
         return "Blanc";
-    } else if (r > seuilDominance && r > g && r > b) {
+    } else if (r > seuilDominance && r > g+b) {
         return "Rouge";
-    } else if (g > seuilDominance && g > r && g > b) {
+    } else if (g > seuilDominance && g > r+b) {
         return "Vert";
-    } else if (b > seuilDominance && b > r && b > g) {
+    } else if (b > seuilDominance && b > r+g) {
         return "Bleu";
     } else if (r > g && r > b) {
         return "Jaune";
