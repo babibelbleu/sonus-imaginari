@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sonus Imaginari</title>
     <link rel="stylesheet" href="index.css">
-    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <header>
@@ -18,7 +17,7 @@
                     <img src="icons/burger_menu.svg" alt="Menu de navigation" class="icon" onclick="switchMenu()">
                     <div class="navigation-menu">
                         <ul class="navigation-links">
-                            <li id="homeLink" onclick="changePage('index.html')">Accueil</li>
+                            <li id="homeLink"><a href="index.html">Accueil</a></li>
                             <li id="aboutLink" onclick="changePage('about.html')">À Propos</li>
                         </ul>
                     </div>
@@ -29,28 +28,32 @@
     </header>
 
     <main class="main-page">
-        <div class="camera">
-            <div class="video-container">
-                <video id="video" autoplay playsinline muted>
-                    Video stream not available.
-                </video>
-            </div>
+        <div class="presentation">
+            <h2>Bienvenue sur Sonus Imaginari</h2>
+            <p>Plongez dans une expérience immersive où chaque coup de pinceau, chaque nuance de couleur, se métamorphose en une fréquence unique. Sonus Imaginari transcende les barrières visuelles, offrant un voyage artistique sonore qui éveille les sens et ouvre les portes de l'imagination. 
+              Explorez l'art d'une manière nouvelle et inspirante. Bienvenue sur Sonus Imaginari, où la créativité devient une mélodie et l'art devient une expérience sensorielle inoubliable.</p>
         </div>
 
-        <div class="controls">
-            <button id="startButton" class="btn-action">Commencer</button>
-            <span class="button-separator"></span>
-            <button id="recordButton" class="btn-action" onclick="toggleRecording()">Enregistrer</button>
+        <div class="about-section">
+            <h2>À Propos de Nous</h2>
+            <p>Bienvenue chez Sonus Imaginari, une équipe passionnée dédiée à créer une expérience artistique sonore unique. Nous sommes fiers de vous présenter les visages derrière notre projet :</p>
+            <p>Notre Équipe se compose de : </p>
+            <li>Bastien</li>
+            <li>Alex</li>
+            <li>Sara</li>
+            <li>Mohammed</li>
+            <li>Djibril</li>
+        </div>
+        <div class="client-section">
+            <h3>Notre Client</h3>
+            <p>Nous avons le plaisir de collaborer avec Ines, notre cliente exceptionnelle. Son engagement envers la créativité et son soutien constant ont été des éléments clés de notre succès.</p>
         </div>
 
         <canvas id="canvas"></canvas>
         <div id="iphone-message" style="display: none;">Version iPhone</div>
     </main>
 
-     <!--
-      Import des différents fichiers afin de simplifier le code
-      Comme on a des variables globales, on n'importe aucun script en defer.
-    -->
+     <!-- Import des différents fichiers afin de simplifier le code -->
     <script src="global_variables.js"></script>
     <script src="utils.js"></script>
     <script src="genre.js"></script>
