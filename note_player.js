@@ -28,5 +28,9 @@
 
     // on joue la note pour une durée de 0.1s
     let frequency = nanometer;
+
+    // if NaN, we don't play note
+    if (isNaN(frequency)) return;
+
     synth.triggerAttackRelease(frequency, 0.1);
 }
