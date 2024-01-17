@@ -7,7 +7,7 @@
   --menu-hover-color: #3280d3; /* Couleur au survol des liens du menu */
 }
 
-/* Styles de base pour le corps et le html */
+/* Initialisation du style de la page pour éviter les erreurs de margin et padding */
 body, html {
   margin: 0;
   padding: 0;
@@ -16,14 +16,7 @@ body, html {
   background-color: white;
 }
 
-/* Styles pour la barre de navigation */
-header {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  z-index: 1000;
-}
-
+/* Barre de navigation et header */
 #nav-bar {
   background-color: var(--primary-color);
   color: white;
@@ -35,6 +28,7 @@ header {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
+/* Style pour le logo ("sonus-imaginari") */
 .navbar-logo h1 {
   margin: 0 3%;
   font-family: Arial, sans-serif;
@@ -43,15 +37,14 @@ header {
   color: white;
 }
 
+/* Styles pour les icônes du header */
 .top-icons {
-  display: flex;
-  justify-content: space-between;
   position: absolute;
   top: 20px;
   right: 3%;
 }
 
-/* Styles pour les icônes */
+/* Styles pour chaque icône (et non tout le groupe d'icônes avec .top-icons) */
 .icon {
   width: 40px;
   height: 40px;
@@ -65,13 +58,15 @@ header {
   opacity: 0.8;
 }
 
-/* Styles pour le menu déroulant */
+
+/* Styles pour le menu déroulant (icône + liens) */
 .dropdown {
   position: relative;
   display: inline-block;
   height: 50px;
 }
 
+/* Styles pour le menu déroulant qui doit apparaître uniquement au survol de la souris */
 .navigation-menu {
   display: none;
   position: absolute;
@@ -89,12 +84,14 @@ header {
   transform: scaleY(0);
 }
 
+/* Affiche le menu déroulant au survol de la souris */
 .dropdown:hover .navigation-menu {
   display: block;
   opacity: 1;
   transform: scaleY(1);
 }
 
+/* Style pour les liens de navigation */
 .navigation-links {
   list-style-type: none;
   padding: 0;
@@ -103,6 +100,7 @@ header {
   flex-direction: column;
 }
 
+/* Style pour un lien de navigation */
 .navigation-links li {
   margin: 20px 30px;
   padding: 10px;
@@ -111,12 +109,13 @@ header {
   color: white;
 }
 
+/* Change la couleur du texte lorsque la souris survole un lien */
 .navigation-links li:hover,
 .navigation-links li:active {
   color: var(--menu-hover-color);
 }
 
-/* Styles pour le contenu principal */
+/* Styles pour le main */
 .main-page {
   display: flex;
   flex-direction: column;
@@ -153,6 +152,7 @@ video {
   object-fit: cover;
 }
 
+/* Style pour les boutons de controle (enregistrement et démarrage du programme) */
 .controls {
   text-align: center;
   margin-top: 2%;
@@ -161,6 +161,7 @@ video {
   gap: 10px;
 }
 
+/* Style pour les boutons de controle (enregistrement et démarrage du programme) */
 .btn-action,
 #recordButton {
   margin-bottom: 20px;
@@ -194,7 +195,7 @@ canvas {
   margin: 0 5px;
 }
 
-/* Media queries pour les écrans larges */
+/* Media queries pour les écrans larges (responsive) */
 @media (min-width: 1080px) {
   .navigation-links li {
       margin: 0 2%;
@@ -202,32 +203,6 @@ canvas {
 
   .camera {
       width: 60%;
-  }
-}
-
-/* Media queries pour les écrans plus petits */
-@media (max-width: 768px) {
-  .navigation-links {
-      flex-direction: column;
-      padding: 20px 0;
-  }
-
-  .navigation-links li {
-      margin-bottom: 10px;
-      text-align: center;
-      width: 100%;
-  }
-
-  .camera {
-      width: 95%;
-  }
-
-  .video-container {
-      padding-bottom: 75%;
-  }
-
-  .top-icons {
-      display: none;
   }
 }
 
@@ -265,10 +240,12 @@ canvas {
   color: #555;
 }
 
+/* TODO :: mettre un margin sur le bon component */
 .main-content {
-  padding-top: 100px; /* Ajustez en fonction de la hauteur de votre navbar */
+  padding-top: 100px;
 }
 
+/* Style faq */
 .faq-section {
   margin: 20px;
 }
@@ -280,7 +257,7 @@ canvas {
 }
 
 .faq-answer {
-  display: none; /* Cache initialement les réponses */
+  display: none;
   padding-left: 20px;
   color: var(--text-color);
 }
@@ -290,5 +267,5 @@ canvas {
 }
 
 .container {
-  padding-top: 100px; /* Ajustez en fonction de la hauteur de votre navbar */
+  padding-top: 100px;
 }
