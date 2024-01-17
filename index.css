@@ -68,6 +68,7 @@ header {
 .dropdown {
   position: relative;
   display: inline-block;
+  height: 50px;
 }
 
 .navigation-menu {
