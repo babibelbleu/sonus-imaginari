@@ -272,8 +272,8 @@ canvas {
   padding-top: 100px;
 }
 
+/* Pop-up pour mobile quand on clique sur l'enregistrement */
 .comming-soon{
-  /* Position tout en haut de la page */
   position: fixed;
   top: 0;
   left: 0;
@@ -295,6 +295,7 @@ canvas {
   visibility: hidden;
 }
 
+/* Responsive pour le header */
 @media screen and (max-width: 768px) {
   #nav-bar{
     display: flex;
