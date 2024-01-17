@@ -53,7 +53,7 @@ body, html {
   transition: transform 0.9s ease, opacity 0.5s ease;
 }
 
-.icon:hover {
+.icon:hover, .icon:active {
   transform: scale(1.2);
   opacity: 0.8;
 }
@@ -85,7 +85,7 @@ body, html {
 }
 
 /* Affiche le menu déroulant au survol de la souris */
-.dropdown:hover .navigation-menu {
+.dropdown:hover .navigation-menu, .dropdown:active .navigation-menu {
   display: block;
   opacity: 1;
   transform: scaleY(1);
@@ -177,7 +177,9 @@ video {
 }
 
 .btn-action:hover,
-#recordButton:hover {
+#recordButton:hover,
+.btn-action:active,
+#recordButton:active {
   background-color: var(--button-hover-color);
 }
 
@@ -262,10 +264,22 @@ canvas {
   color: var(--text-color);
 }
 
-.faq-item:hover .faq-question {
+.faq-item:hover .faq-question, .faq-item:active .faq-question {
   text-decoration: underline;
 }
 
 .container {
   padding-top: 100px;
+}
+
+@media screen and (max-width: 768px) {
+  #nav-bar{
+    display: flex;
+    margin: auto;
+  }
+
+  #nav-bar .navbar-logo {
+    margin: 0 3rem;
+  }
+  
 }
