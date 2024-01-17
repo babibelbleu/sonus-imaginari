@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Enregistrement du son du navigateur</title>
+  </head>
+  <body>
+    <h1>Enregistrement du son du navigateur</h1>
+
+    <p>Cliquez sur le bouton pour commencer/arrêter l'enregistrement du son du navigateur</p>
+    <button>Commencer/Arrêter l'enregistrement</button>
+    <audio controls></audio>
+    <script>
+      const b = document.querySelector("button");
+      let clicked = false;
+      const chunks = [];
+      const ac = new AudioContext();
+      const osc = ac.createOscillator();
+      const dest = ac.createMediaStreamDestination();
+      const mediaRecorder = new MediaRecorder(dest.stream);
+      osc.connect(dest);
+
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then((stream) => {
+          const microphoneSource = ac.createMediaStreamSource(stream);
+          microphoneSource.connect(ac.destination);
+
+          b.addEventListener("click", (e) => {
+            if (!clicked) {
+              mediaRecorder.start();
+              osc.start(ac.currentTime);
+              e.target.textContent = "Arrêter l'enregistrement";
+              clicked = true;
+            } else {
+              mediaRecorder.stop();
+              osc.stop(0);
+              e.target.disabled = true;
+            }
+          });
+
+          mediaRecorder.ondataavailable = (evt) => {
+            if (evt.data.size > 0) {
+              chunks.push(evt.data);
+            }
+          };
+
+          mediaRecorder.onstop = () => {
+            const blob = new Blob(chunks, { type: "audio/wav" });
+            document.querySelector("audio").src = URL.createObjectURL(blob);
+          };
+        })
+        .catch((err) => {
+          console.error("Erreur lors de l'accès au microphone:", err);
+        });
+    </script>
+  </body>
+</html>
