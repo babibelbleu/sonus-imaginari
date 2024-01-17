@@ -21,6 +21,16 @@ let isRecording = false;
  * **TODO :** *implémenter une version mobile, car l'API MediaRecorder n'est pas supportée et AudioContext non plus*
  */
 async function toggleRecording() {
+  if(window.innerWidth < 768){
+    const commingSoon = document.getElementById('comming-soon');
+    commingSoon.classList.remove('comming-soon-disabled');
+    commingSoon.classList.add('comming-soon-active');
+    setTimeout(() => {
+      commingSoon.classList.remove('comming-soon-active');
+      commingSoon.classList.add('comming-soon-disabled');
+    }, 3000);
+  }
+
   const recordButton = document.getElementById('recordButton');
 
   // Si l'enregistrement n'est pas en cours, on le démarre
