@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aide - Sonus Imaginari</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <nav id="nav-bar">
+        <div class="navbar-logo">
+            <h1>AIDE</h1>
+        </div>
+        <div class="top-icons">
+            <div class="dropdown">
+                <img src="icons/burger_menu.svg" alt="Menu de navigation" class="icon" onclick="switchMenu()">
+                <div class="navigation-menu">
+                    <ul class="navigation-links">
+                        <li id="homeLink" onclick="changePage('index.html')">Accueil</li>
+                        <li id="aboutLink" onclick="changePage('about.html')">À Propos</li>
+                        <li id="aboutLink" onclick="changePage('utilisation.html')">Guide d'utilisation</li>
+                        <li id="aboutLink" onclick="changePage('help.html')">Aide</li>
+                    </ul>
+                </div>
+            </div>
+            <img src="icons/download.svg" alt="Télécharger l'enregistrement" class="icon">
+        </div>
+    </nav>
+
+    <div class="container">
+        <section>
+            <h2>Besoin d'aide ?</h2>
+            <p>Si vous rencontrez des problèmes avec Sonus Imaginari ou si vous avez des questions, n'hésitez pas à contacter nos contributeurs sur GitHub.</p>
+            <p>Visitez notre page de projet sur GitHub pour obtenir de l'aide ou pour signaler un problème :</p>
+            <a href="https://github.com/babibelbleu/sonus-imaginari" target="_blank">github.com/babibelbleu/sonus-imaginari</a>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Sonus Imaginari. Tous droits réservés.</p>
+    </footer>
+
+    <script src="http://unpkg.com/tone"></script>
+    <script src="global_variables.js"></script>
+    <script src="utils.js"></script>
+    <script src="genre.js"></script>
+    <script src="note_player.js"></script>
+    <script src="color_manager.js"></script>
+    <script src="camera.js"></script>
+    <script src="index.js"></script>
+    <script src="download.js"></script>
+    <script src="FAQ.js"></script>
+
+</body>
+</html>
