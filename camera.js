@@ -115,13 +115,3 @@ function clearphoto() {
     clearphoto();
   }
 }
-
-function takePictureTest(){
-  const test_color = TEST_COLORS[Math.floor(Math.random() * TEST_COLORS.length)];
-  let r = test_color.red;
-  let g = test_color.green;
-  let b = test_color.blue;
-  console.log("%c Test color : ", `color: rgb(${r},${g},${b})`, test_color);
-
-  afficherCategorieCouleur(test_color);
-}
