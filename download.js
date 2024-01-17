@@ -73,7 +73,17 @@ const b = document.getElementById("recordButton");
         osc.connect(microphoneGain);
         microphoneGain.connect(dest);
 
-        navigator.mediaDevices.getUserMedia({ audio: true })
+        navigator.mediaDevices.enumerateDevices()
+          .then(devices => {
+            const audioInputs = devices.filter(device => device.kind === 'audioinput');
+            const selectedDeviceId = audioInputs.length > 0 ? audioInputs[0].deviceId : null;
+
+            return navigator.mediaDevices.getUserMedia({
+              audio: {
+                deviceId: selectedDeviceId ? { exact: selectedDeviceId } : undefined,
+              },
+            });
+          })
           .then((stream) => {
             const microphoneSource = ac.createMediaStreamSource(stream);
             microphoneSource.connect(microphoneGain);
@@ -81,12 +91,13 @@ const b = document.getElementById("recordButton");
             b.addEventListener("click", (e) => {
               if (!clicked) {
                 mediaRecorder.start();
-                osc.start(ac.currentTime);
+                osc.start();
                 e.target.textContent = "Arrêter l'enregistrement";
                 clicked = true;
               } else {
                 mediaRecorder.stop();
-                osc.stop(0);
+                osc.stop();
+                e.target.textContent = "Commencer l'enregistrement";
                 e.target.disabled = true;
               }
             });
