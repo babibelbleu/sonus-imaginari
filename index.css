@@ -4,6 +4,7 @@
   --button-hover-color: #052c56; /* Couleur au survol des boutons */
   --text-color: #333; /* Couleur du texte */
   --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Police globale */
+  --menu-hover-color: #3280d3; /* Couleur au survol des liens du menu */
 }
 
 /* Styles de base pour le corps et le html */
@@ -112,7 +113,7 @@ header {
 
 .navigation-links li:hover,
 .navigation-links li:active {
-  color: var(--button-hover-color);
+  color: var(--menu-hover-color);
 }
 
 /* Styles pour le contenu principal */
