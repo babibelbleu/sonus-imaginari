@@ -6,25 +6,25 @@ document.addEventListener('DOMContentLoaded', function () {
     navigationMenu.classList.toggle('active');
   });
 
-  const navLinks = document.querySelectorAll('.navigation-links li');
-  navLinks.forEach(link => {
-    link.addEventListener('click', function (event) {
-      event.preventDefault();
-      const genre = this.textContent.trim().toUpperCase();
-      changeGenre(genre);
-    });
-  });
+  // const navLinks = document.querySelectorAll('.navigation-links li');
+  // navLinks.forEach(link => {
+  //   link.addEventListener('click', function (event) {
+  //     event.preventDefault();
+  //     const genre = this.textContent.trim().toUpperCase();
+  //     changeGenre(genre);
+  //   });
+  // });
 
-  const aboutLink = document.getElementById('aboutLink');
-  aboutLink.addEventListener('click', function () {
-    window.location.href = 'about.html';
-  });
+  // const aboutLink = document.getElementById('aboutLink');
+  // aboutLink.addEventListener('click', function () {
+  //   window.location.href = 'about.html';
+  // });
 
-  const homeLink = document.getElementById('homeLink');
-  homeLink.addEventListener('click', function (event) {
-    event.preventDefault(); 
-    window.location.href = 'index.html';
-  });
+  // const homeLink = document.getElementById('homeLink');
+  // homeLink.addEventListener('click', function (event) {
+  //   event.preventDefault(); 
+  //   window.location.href = 'index.html';
+  // });
 
   startup();
 
