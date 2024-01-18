@@ -12,24 +12,27 @@ function rgbToWavelength(r, g, b) {
     const intervalles = {
         "Orange": [590, 640],
         "Rose": [500, 590],
-        "Blanc": [400, 750],     // Blanc a une plage de longueurs d'onde étendue
+        "Blanc": [400, 750],
         "Rouge": [650, 750],
         "Bleu": [450, 495],
         "Vert": [495, 570],
         "Jaune": [570, 590],
         "Magenta": [380, 500],
         "Cyan": [490, 520]
-        // Ajoutez d'autres intervalles selon vos besoins
     };
 
     const color = whatColor(r, g, b);
 
 
-   // Vérifier si la couleur est dans la liste d'intervalles
+   // On vérifie que la couleur est dans l'objet intervalles
    if (intervalles.hasOwnProperty(color)) {
         console.log(color);
-        // Choisissez une valeur aléatoire dans l'intervalle
+        
+        // On récupère l'intervalle de longueur d'onde associé à la couleur
         var intervalle = intervalles[color];
+
+        // On génère une longueur d'onde aléatoire dans l'intervalle
+        // car on ne peut pas déterminer la longueur d'onde exacte
         var longueurDonde = Math.floor(Math.random() * (intervalle[1] - intervalle[0] + 1)) + intervalle[0];
         return longueurDonde;
     } else {
@@ -37,10 +40,13 @@ function rgbToWavelength(r, g, b) {
     }
 }
 
-function estDansIntervalle(valeur, cible, intervalle) {
-    return Math.abs(valeur - cible) <= intervalle;
-}
-
+/**
+ * Détermine la couleur à partir des composantes RGB
+ * 
+ * @param {*} r - La composante rouge
+ * @param {*} g - La composante verte
+ * @param {*} b - La composante bleue
+ */
 function whatColor(r, g, b){
     // Seuil pour considérer la composante rouge comme dominante
     var seuilDominance = 200;
@@ -98,7 +104,6 @@ function whatColor(r, g, b){
  * @returns {void}
  */
  function afficherCategorieCouleur(couleur) {
-    // const categorie = rgbToWavelength(couleur.red, couleur.green, couleur.blue);
     const r = couleur.red;
     const g = couleur.green;
     const b = couleur.blue;
@@ -113,7 +118,7 @@ function whatColor(r, g, b){
     console.log(`%c texte`, `color: rgb(${r}, ${g}, ${b})`);
 
     // on normalise la valeur de la longueur d'onde pour qu'elle soit dans la plage audible
-    const nanometerNormalized = normalizeValue(nanometer, 380, 700, 20, 20000);
+    const nanometerNormalized = normalizeValue(nanometer, 380, 750, 20, 20000);
 
     console.error("FREQUENCY :", nanometerNormalized, "nm");
 
