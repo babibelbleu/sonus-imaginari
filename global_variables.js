@@ -43,6 +43,10 @@
   */
 const ENVIRONMENT = "test";
 
+/**
+ * Spécifie si l'utilisateur a autorisé le test
+ * i.e. a cliqué sur le bouton "commencer" en mode test
+ */
 let isTestAuthorized = false;
 
 /**
