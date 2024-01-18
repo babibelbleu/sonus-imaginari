@@ -44,6 +44,17 @@ body, html {
   right: 3%;
 }
 
+/* Pages dont il n'y a qu'une icone */
+.top-icons.--solo-icon{
+  position: relative;
+  top: 0;
+  margin: auto;
+}
+
+.top-icons.--solo-icon .dropdown{
+  height: auto;
+}
+
 /* Styles pour chaque icône (et non tout le groupe d'icônes avec .top-icons) */
 .icon {
   width: 40px;

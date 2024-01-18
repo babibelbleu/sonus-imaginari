@@ -8,26 +8,28 @@
 </head>
 <body>
     <header>
-        <nav id="nav-bar" onclick="closeMenu()">
+        <nav id="nav-bar">
             <div class="navbar-logo">
                 <h1>SONUS IMAGINARI</h1>
             </div>
-            <div class="top-icons">
+            <div class="top-icons --solo-icon">
                 <div class="dropdown">
-                    <img src="icons/burger_menu.svg" alt="Menu de navigation" class="icon" onclick="switchMenu()">
+                    <img src="icons/burger_menu.svg" alt="Menu de navigation" class="icon">
                     <div class="navigation-menu">
                         <ul class="navigation-links">
-                            <li id="homeLink"><a href="index.html">Accueil</a></li>
+                            <li id="homeLink" onclick="changePage('index.html')">Accueil</li>
                             <li id="aboutLink" onclick="changePage('about.html')">À Propos</li>
+                            <li id="aboutLink" onclick="changePage('utilisation.html')">Guide d'utilisation</li>
+                            <li id="aboutLink" onclick="changePage('help.html')">Aide</li>
                         </ul>
                     </div>
                 </div>
-                <img src="icons/download.svg" alt="Télécharger l'enregistrement" class="icon">
             </div>
         </nav>
     </header>
 
     <main class="main-page">
+        <div class="main-content"></div>
         <div class="presentation">
             <h2>Bienvenue sur Sonus Imaginari</h2>
             <p>Plongez dans une expérience immersive où chaque coup de pinceau, chaque nuance de couleur, se métamorphose en une fréquence unique. Sonus Imaginari transcende les barrières visuelles, offrant un voyage artistique sonore qui éveille les sens et ouvre les portes de l'imagination. 
