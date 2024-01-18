@@ -29,6 +29,7 @@ async function toggleRecording() {
       commingSoon.classList.remove('comming-soon-active');
       commingSoon.classList.add('comming-soon-disabled');
     }, 3000);
+    return;
   }
 
   const recordButton = document.getElementById('recordButton');
