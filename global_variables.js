@@ -41,7 +41,7 @@
   * - prod
   * - test
   */
-const ENVIRONMENT = "test";
+const ENVIRONMENT = "prod";
 
 /**
  * Spécifie si l'utilisateur a autorisé le test
