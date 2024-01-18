@@ -117,7 +117,7 @@ function clearphoto() {
      // On prend la valeur rgb centrale de l'image
     const couleurAnalyser = (colors.length / 4) / 2;
 
-    console.log(rgbValues[couleurAnalyser]);
+    if(ENVIRONMENT == "test") console.log(rgbValues[couleurAnalyser]);
 
     // On affiche la catégorie de couleur et on lis la note associée
     afficherCategorieCouleur(rgbValues[couleurAnalyser]);

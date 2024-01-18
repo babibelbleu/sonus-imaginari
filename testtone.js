@@ -11,7 +11,7 @@ synth.connect(dest);
 
 // Fonction pour jouer une note de piano
 function playPianoNote() {
-    console.log("Note de piano jouée");
+    if(ENVIRONMENT == "test") console.log("Note de piano jouée");
     synth.triggerAttackRelease('C4', '8n');
 }
 

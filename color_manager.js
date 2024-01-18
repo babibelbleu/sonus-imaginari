@@ -26,7 +26,7 @@ function rgbToWavelength(r, g, b) {
 
    // On vérifie que la couleur est dans l'objet intervalles
    if (intervalles.hasOwnProperty(color)) {
-        console.log(color);
+        if(ENVIRONMENT == "test") console.log(color);
         
         // On récupère l'intervalle de longueur d'onde associé à la couleur
         var intervalle = intervalles[color];
@@ -112,15 +112,15 @@ function whatColor(r, g, b){
     const nanometer = rgbToWavelength(r, g, b);
 
     // On affiche en console la catégorie de couleur
-    console.log(categorie);
+    if(ENVIRONMENT == "test") console.log(categorie);
 
     // On affiche dans la console "texte" avec la couleur rgb(r, g, b)
-    console.log(`%c texte`, `color: rgb(${r}, ${g}, ${b})`);
+    if(ENVIRONMENT == "test") console.log(`%c texte`, `color: rgb(${r}, ${g}, ${b})`);
 
     // on normalise la valeur de la longueur d'onde pour qu'elle soit dans la plage audible
     const nanometerNormalized = normalizeValue(nanometer, 380, 750, 20, 20000);
 
-    console.error("FREQUENCY :", nanometerNormalized, "nm");
+    if(ENVIRONMENT == "test") console.error("FREQUENCY :", nanometerNormalized, "nm");
 
     playNote(nanometerNormalized);
 }

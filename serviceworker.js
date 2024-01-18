@@ -1,3 +1,3 @@
 self.addEventListener("fetch", (event) => {
-    console.log(event.request.url);
+    if(ENVIRONMENT == "test") console.log(event.request.url);
 })
