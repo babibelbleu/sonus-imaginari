@@ -280,7 +280,7 @@ canvas {
 }
 
 .faq-item:hover .faq-question, .faq-item:active .faq-question {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .container {
