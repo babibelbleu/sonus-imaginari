@@ -1,15 +1,19 @@
-// camera.js
-
+// éléments HTML utiles
 let videoElement = null;
 let startButtonElement = null;
 
-/*
- La fonction 'toggleCamera' gère le basculement de l'état de la caméra entre activée et désactivée : 
+/**
+ Fonction qui gère le basculement de l'état de la caméra entre activée et désactivée : 
       - état 1 : la caméra n'est pas active -> on utilise getUserMedia pour accéder à la caméra vidéo, initialise le flux vidéo, et met à jour l'état de la caméra.
       - état 2 : la caméra est active -> on arrête tous les flux vidéo, réinitialise l'état de la caméra et appelle la fonction 'stopAllSounds()' pour arrêter tous les sons.
+
+Cela permet de couper la caméra et les sons associés, ce qui permet de respecter le RGPD.
 */
 function toggleCamera() {
+  // caméra inactive
   if (!isCameraActive) {
+
+    // on récupère la caméra arrière sans son
     navigator.mediaDevices.getUserMedia({
       video: {
         facingMode: 'environment'
@@ -18,6 +22,7 @@ function toggleCamera() {
       autoplay: true,
       playinline: true,
     })
+    // Si on a l'autorisation, on lance la vidéo
     .then((stream) => {
       videoElement.srcObject = stream;
       videoElement.play();
@@ -27,35 +32,40 @@ function toggleCamera() {
       console.error(`An error occurred: ${err}`);
     });
   } else {
+    // on récupère tous les flux vidéo et on les arrête
     let tracks = videoElement.srcObject.getTracks();
     tracks.forEach(track => track.stop());
     videoElement.srcObject = null;
     isCameraActive = false;
     startButtonElement.textContent = "Commencer";
+
+    // on arrête tous les sons
     stopAllSounds();
   }
 }
 
-/*
+/**
  Fonction qui utilise la bibliothèque Tone.js pour arrêter tous les sons.
 */
 function stopAllSounds() {
   Tone.Transport.stop();
 }
 
-/*
+/** 
  Fonction qui initialise les contrôles de la caméra.
+
+ @param videoId : l'id de la balise <video> dans laquelle on affiche le flux vidéo
+ @param buttonId : l'id du bouton qui permet de démarrer/arrêter la caméra
 */
 function initCameraControls(videoId, buttonId) {
   videoElement = document.getElementById(videoId);
   startButtonElement = document.getElementById(buttonId);
 
+  // on déclenche la fonction 'toggleCamera' lorsque l'utilisateur clique sur le bouton
   startButtonElement.addEventListener('click', toggleCamera);
 }
 
-/*
- Ecouteur d'événements qui est déclenché lorsque la page est entièrement chargée
-*/
+// L'initialisation de la caméra ne se fait pas en mode test
 if(ENVIRONMENT != "test"){
   window.addEventListener("load", () => {
     initCameraControls('video', 'startButton');
@@ -116,6 +126,10 @@ function clearphoto() {
   }
 }
 
+/**
+ * Fonction qui permet de jouer une note en fonction de la couleur
+ * Utilisé dans le mode test
+ */
 function takePictureTest() {
   let testVisualizer = document.querySelector(".test-visualizer");
 
