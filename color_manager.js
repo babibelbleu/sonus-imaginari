@@ -59,11 +59,11 @@ function whatColor(r, g, b){
 
 
     // conditions spécifiques pour les couleurs primaires
-    if(estDansIntervalle(r, 10, 255) && estDansIntervalle(g, 0, 10) && estDansIntervalle(b, 0, 10)){
+    if(isInGap(r, 10, 255) && isInGap(g, 0, 10) && isInGap(b, 0, 10)){
         return "Rouge";
-    } else if(estDansIntervalle(r, 0, 10) && estDansIntervalle(g, 10, 255) && estDansIntervalle(b, 0, 10)){
+    } else if(isInGap(r, 0, 10) && isInGap(g, 10, 255) && isInGap(b, 0, 10)){
         return "Vert";
-    } else if(estDansIntervalle(r, 0, 10) && estDansIntervalle(g, 0, 10) && estDansIntervalle(b, 10, 255)){
+    } else if(isInGap(r, 0, 10) && isInGap(g, 0, 10) && isInGap(b, 10, 255)){
         return "Bleu";
     }
 
