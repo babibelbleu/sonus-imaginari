@@ -61,30 +61,22 @@ function normalizeValue(
     return nanometer / 1e9;
 }
 
-
 /**
- * Fonction qui permet de faire apparaître le menu déroulant
+ * Fonction qui permet de changer de page
+ * 
+ * @param {string} page 
  */
- function switchMenu() {
-    console.log("switch menu");
-    if (navbar.style.display === "none") {
-      navbar.style.display = "block";
-      navbar.classList.remove("nav-bar-close");
-      navbar.classList.add("nav-bar-open");
-    }
-}
-  
-/**
-* Fonction qui permet de fermer le menu déroulant
-*/
-function closeMenu() {
-    navbar.classList.remove("nav-bar-open");
-    navbar.classList.add("nav-bar-close");
-    setTimeout(() => {
-      navbar.style.display = "none";
-    }, 500);
-}
-
 function changePage(page) {
   window.location.href = page;
+}
+
+/**
+ * Fonction qui vérifie que la valeur est dans l'intervalle [cible - intervalle, cible + intervalle]
+ * 
+ * @param {int} valeur 
+ * @param {int} cible 
+ * @param {int} intervalle 
+ */
+function isInGap(valeur, cible, intervalle) {
+  return Math.abs(valeur - cible) <= intervalle;
 }
