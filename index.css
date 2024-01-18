@@ -48,17 +48,6 @@ body, html {
   right: 3%;
 }
 
-/* Pages dont il n'y a qu'une icone */
-.top-icons.--solo-icon{
-  position: relative;
-  top: 0;
-  margin: auto;
-}
-
-.top-icons.--solo-icon .dropdown{
-  height: auto;
-}
-
 /* Styles pour chaque icône (et non tout le groupe d'icônes avec .top-icons) */
 .icon {
   width: 40px;
@@ -224,28 +213,24 @@ canvas {
 }
 
 /* Styles pour les sections 'À propos de nous', 'FAQ', etc. */
-.presentation,
-.about-section,
-.client-section {
+.section {
   text-align: left;
   margin: 30px;
   margin-top: -10px;
   padding: 20px;
+  width: 80%;
 }
 
-.presentation h2,
-.about-section h2,
-.team-section h3,
-.client-section h3 {
+.section h2,
+.section h3 {
   font-size: 2.5em;
   color: var(--primary-color);
   text-align: left;
 }
 
-.presentation p,
-.about-section p,
-.about-section li,
-.client-section p {
+
+.section li,
+.section p {
   font-size: 1.2em;
   line-height: 1.6;
   color: #555;
@@ -271,6 +256,7 @@ canvas {
   cursor: pointer;
   color: var(--primary-color);
   margin-bottom: 5px;
+  font-size: 1.5rem !important;
 }
 
 .faq-answer {
@@ -320,5 +306,17 @@ canvas {
   #nav-bar .navbar-logo {
     margin: 0 5%;
   }
+
+  /* Pages dont il n'y a qu'une icone */
+  .top-icons.--solo-icon{
+    position: relative;
+    top: 0;
+    margin: auto;
+  }
+
+  .top-icons.--solo-icon .dropdown{
+    height: auto;
+  }
   
 }
+

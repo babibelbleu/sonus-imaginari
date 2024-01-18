@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sonus Imaginari</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="../index.css">
 </head>
 <body>
     <header>
@@ -14,13 +14,13 @@
             </div>
             <div class="top-icons --solo-icon">
                 <div class="dropdown">
-                    <img src="icons/burger_menu.svg" alt="Menu de navigation" class="icon">
+                    <img src="../icons/burger_menu.svg" alt="Menu de navigation" class="icon">
                     <div class="navigation-menu">
                         <ul class="navigation-links">
-                            <li id="homeLink" onclick="changePage('index.html')">Accueil</li>
-                            <li id="aboutLink" onclick="changePage('about.html')">À Propos</li>
-                            <li id="aboutLink" onclick="changePage('utilisation.html')">Guide d'utilisation</li>
-                            <li id="aboutLink" onclick="changePage('help.html')">Aide</li>
+                            <li id="homeLink" onclick="changePage('../index.html')">Accueil</li>
+                            <li id="aboutLink">À Propos</li>
+                            <li id="aboutLink" onclick="changePage('../utilisation/index.html')">Guide d'utilisation</li>
+                            <li id="aboutLink" onclick="changePage('../help/index.html')">Aide</li>
                         </ul>
                     </div>
                 </div>
@@ -30,13 +30,13 @@
 
     <main class="main-page">
         <div class="main-content"></div>
-        <div class="presentation">
+        <div class="presentation section">
             <h2>Bienvenue sur Sonus Imaginari</h2>
             <p>Plongez dans une expérience immersive où chaque coup de pinceau, chaque nuance de couleur, se métamorphose en une fréquence unique. Sonus Imaginari transcende les barrières visuelles, offrant un voyage artistique sonore qui éveille les sens et ouvre les portes de l'imagination. 
               Explorez l'art d'une manière nouvelle et inspirante. Bienvenue sur Sonus Imaginari, où la créativité devient une mélodie et l'art devient une expérience sensorielle inoubliable.</p>
         </div>
 
-        <div class="about-section">
+        <div class="about-section section">
             <h2>À Propos de Nous</h2>
             <p>Bienvenue chez Sonus Imaginari, une équipe passionnée dédiée à créer une expérience artistique sonore unique. Nous sommes fiers de vous présenter les visages derrière notre projet :</p>
             <p>Notre Équipe se compose de : </p>
@@ -46,7 +46,7 @@
             <li>Mohammed</li>
             <li>Djibril</li>
         </div>
-        <div class="client-section">
+        <div class="client-section section">
             <h3>Notre Client</h3>
             <p>Nous avons le plaisir de collaborer avec Ines, notre cliente exceptionnelle. Son engagement envers la créativité et son soutien constant ont été des éléments clés de notre succès.</p>
         </div>
@@ -55,6 +55,6 @@
         <div id="iphone-message" style="display: none;">Version iPhone</div>
     </main>
 
-    <script src="utils.js"></script>
+    <script src="../utils.js"></script>
 </body>
 </html>
