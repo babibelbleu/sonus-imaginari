@@ -23,3 +23,11 @@ Sonus Imaginari est une application web innovante qui transforme les couleurs en
 - Activez votre caméra lorsque vous êtes invité par l'application.
 - Pointez la caméra vers différents objets pour capturer leur couleur.
 - Écoutez les sons générés en fonction des couleurs détectées.
+
+## Tests
+Pour effectuer des tests, changer la variable suivante dans `global_variables.js`
+```javascript
+const ENVIRONMENT = "test" // Changer en test pour passer dans l'environnement de test
+```
+
+Une fois cela fait, lancer le programme en local et cliquer sur le bouton "commencer". Les couleurs seront affichées à l'écran et différentes informations sur la couleur détectée et le son joué seront disponibles dans la console.
