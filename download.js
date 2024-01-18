@@ -116,7 +116,7 @@ async function toggleRecording() {
       document.body.removeChild(a);
       audioChunks = [];
       isRecording = false;
-      recordButton.textContent = "Commencer l'enregistrement";
+      recordButton.textContent = "Enregistrer";
     };
   }
 }
