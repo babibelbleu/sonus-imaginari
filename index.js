@@ -1,12 +1,11 @@
+// Quand le DOM est chargé, on lance l'application
 document.addEventListener('DOMContentLoaded', function () {
-  startup();
-
-  // On lance l'application lorsque la page est chargée
+  // On lance l'application en fonction de son mode
   if(ENVIRONMENT != "test") window.addEventListener("load", startup, false);
   if(ENVIRONMENT == "test") window.addEventListener("load", startupTest, false);
 
   // On lance la prise de photo toutes les 100ms
-  // prise de photo = son joué
+  // cf. takePicture() dans camera.js
   setInterval(() => {
     if(isCameraActive && ENVIRONMENT != "test") takePicture();
     if(ENVIRONMENT == "test" && isTestAuthorized){
@@ -21,21 +20,23 @@ document.addEventListener('DOMContentLoaded', function () {
  */
 function startup() {
 
+  // On vérifie qu'on est bien dans la fenêtre principale
+  // sinon le programme ne fonctionne pas
   if (!isInTopWindow()) {
     return;
   }
 
+  // On récupère les éléments HTML utiles
   video = document.getElementById("video");
   canvas = document.getElementById("canvas");
 
   navigator.mediaDevices.enumerateDevices().then((devices) => {
 
     /** On demande l'autorisation d'utiliser la caméra avec les contraintes suivantes :
-         - la caméra arrière
-         - une résolution de 1920x1080
-         - on ne demande pas l'audio
-         - on lance la vidéo automatiquement
-         - on joue la vidéo dans la page et pas dans un nouvel onglet 
+         - la caméra arrière (facingMode: 'environment')
+          - pas de son (audio: false)
+          - se lance automatiquement (autoplay: true)
+          - s'affiche dans une balise video (playinline: true)
    */
     navigator.mediaDevices
       .getUserMedia({
@@ -55,6 +56,8 @@ function startup() {
         console.error(`Il y a eu une erreur: ${err}`);
       });
 
+    // On adapte la taille du canvas à la taille de la vidéo
+    // car toutes les caméras n'ont pas la même taille
     video.addEventListener(
       "canplay",
       (ev) => {
@@ -80,12 +83,22 @@ function startup() {
   });
 }
 
+/**
+ * Fonction de démarrage de l'application en mode test
+ */
 function startupTest(){
   let startButton = document.getElementById("startButton");
+
   startButton.addEventListener('click', () => {
+
+    // On change l'état de l'application
     isTestAuthorized = !isTestAuthorized;
+
+    // On récupère les éléments HTML utiles
     let testVisualizer = document.querySelector(".test-visualizer");
     let camera = document.querySelector(".camera");
+
+    // On change l'affichage en fonction de l'état de l'application
     if(isTestAuthorized){
       startButton.textContent = "Arrêter";
       testVisualizer.classList.remove("invisible");
