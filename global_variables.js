@@ -41,7 +41,9 @@
   * - prod
   * - test
   */
-const ENVIRONMENT = "dev";
+const ENVIRONMENT = "test";
+
+let isTestAuthorized = false;
 
 /**
  * Couleurs de test

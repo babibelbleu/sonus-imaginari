@@ -16,6 +16,10 @@ body, html {
   background-color: white;
 }
 
+.invisible {
+  display: none;
+}
+
 /* Barre de navigation et header */
 #nav-bar {
   background-color: var(--primary-color);

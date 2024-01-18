@@ -115,3 +115,12 @@ function clearphoto() {
     clearphoto();
   }
 }
+
+function takePictureTest() {
+  let testVisualizer = document.querySelector(".test-visualizer");
+
+  let testColor = TEST_COLORS[Math.floor(Math.random() * TEST_COLORS.length)];
+
+  testVisualizer.style.backgroundColor = `rgb(${testColor.red}, ${testColor.green}, ${testColor.blue})`;
+  afficherCategorieCouleur(testColor);
+}

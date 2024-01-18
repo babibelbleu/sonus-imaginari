@@ -1,36 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const menuIcon = document.querySelector('.icon');
-  const navigationMenu = document.querySelector('.navigation-menu');
-
-  menuIcon.addEventListener('click', function () {
-    navigationMenu.classList.toggle('active');
-  });
-
-  // const navLinks = document.querySelectorAll('.navigation-links li');
-  // navLinks.forEach(link => {
-  //   link.addEventListener('click', function (event) {
-  //     event.preventDefault();
-  //     const genre = this.textContent.trim().toUpperCase();
-  //     changeGenre(genre);
-  //   });
-  // });
-
-  // const aboutLink = document.getElementById('aboutLink');
-  // aboutLink.addEventListener('click', function () {
-  //   window.location.href = 'about.html';
-  // });
-
-  // const homeLink = document.getElementById('homeLink');
-  // homeLink.addEventListener('click', function (event) {
-  //   event.preventDefault(); 
-  //   window.location.href = 'index.html';
-  // });
-
   startup();
 
+  // On lance l'application lorsque la page est chargée
+  if(ENVIRONMENT != "test") window.addEventListener("load", startup, false);
+  if(ENVIRONMENT == "test") window.addEventListener("load", startupTest, false);
+
+  // On lance la prise de photo toutes les 100ms
+  // prise de photo = son joué
   setInterval(() => {
-    if (isCameraActive) takePicture();
-  }, 500);
+    if(isCameraActive && ENVIRONMENT != "test") takePicture();
+    if(ENVIRONMENT == "test" && isTestAuthorized){
+      takePictureTest();
+    }
+  }, 100);
 });
 
 
@@ -98,21 +80,20 @@ function startup() {
   });
 }
 
-
-// On lance l'application lorsque la page est chargée
-if(ENVIRONMENT != "test") window.addEventListener("load", startup, false);
-if(ENVIRONMENT == "test") window.addEventListener("load", () => {
+function startupTest(){
   let startButton = document.getElementById("startButton");
-  startButton.addEventListener("click", () => {
-    if(Tone.context.state !== 'running') Tone.start();
-    console.log("Tone context state :", Tone.context.state);
+  startButton.addEventListener('click', () => {
+    isTestAuthorized = !isTestAuthorized;
+    let testVisualizer = document.querySelector(".test-visualizer");
+    let camera = document.querySelector(".camera");
+    if(isTestAuthorized){
+      startButton.textContent = "Arrêter";
+      testVisualizer.classList.remove("invisible");
+      camera.classList.add("invisible");
+    } else {
+      startButton.textContent = "Commencer";
+      testVisualizer.classList.add("invisible");
+      camera.classList.remove("invisible");
+    }
   });
-});
-
-// Prends une photo toutes les demi secondes
-// TODO: Raccourcir le temps pour donner une illusion de temps réel
-setInterval(() => {
-  if(isCameraActive && ENVIRONMENT != "test") takePicture()
-  if(ENVIRONMENT == "test") takePictureTest()
-}, 100);
-
+}
