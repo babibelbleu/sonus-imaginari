@@ -85,46 +85,76 @@ function clearphoto() {
   context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
+// Ajoutez une variable pour suivre l'état du flash
+let isFlashEnabled = false;
+
 /**
  * Fonction qui permet de "prendre une photo" dans le canvas et de
  * jouer la note associée.
  */
- function takePicture() {
+function takePicture() {
   // On récupère le canvas
   const context = canvas.getContext("2d");
 
-   // On vérifie qu'on a bien défini la largeur et la hauteur
-  if (width && height) {
-    canvas.width = width;
-    canvas.height = height;
+  // Vérifier si la caméra a un flash
+  if (navigator.mediaDevices && navigator.mediaDevices.getSupportedConstraints) {
+    const supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
+    if (supportedConstraints.torch) {
+      // Activer le flash si l'utilisateur l'a demandé
+      const videoConstraints = {
+        video: { facingMode: 'environment', torch: isFlashEnabled }
+      };
 
-     // On dessine l'image prise de la vidéo dans le canvas
-    context.drawImage(video, 0, 0, width, height);
+      navigator.mediaDevices.getUserMedia(videoConstraints)
+        .then((stream) => {
+          // On dessine l'image prise de la vidéo dans le canvas
+          context.drawImage(video, 0, 0, width, height);
 
-    // On récupère les données de l'image (le rgb de chaque pixel)
-    const colors = context.getImageData(0, 0, width, height).data;
+          // On récupère les données de l'image (le rgb de chaque pixel)
+          const colors = context.getImageData(0, 0, width, height).data;
 
-    // On met les valeurs de rgb dans un tableau pour mieux les identifier
-    const rgbValues = [];
-    for (let i = 0; i < colors.length; i += 4) {
-      const red = colors[i];
-      const green = colors[i + 1];
-      const blue = colors[i + 2];
-      const alpha = colors[i + 3];
-      rgbValues.push({ red, green, blue, alpha });
+          // On met les valeurs de rgb dans un tableau pour mieux les identifier
+          const rgbValues = [];
+          for (let i = 0; i < colors.length; i += 4) {
+            const red = colors[i];
+            const green = colors[i + 1];
+            const blue = colors[i + 2];
+            const alpha = colors[i + 3];
+            rgbValues.push({ red, green, blue, alpha });
+          }
+
+          // On prend la valeur rgb centrale de l'image
+          const couleurAnalyser = (colors.length / 4) / 2;
+
+          if (ENVIRONMENT == "test") console.log(rgbValues[couleurAnalyser]);
+
+          // On affiche la catégorie de couleur et on lis la note associée
+          afficherCategorieCouleur(rgbValues[couleurAnalyser]);
+        })
+        .catch((err) => {
+          console.error(`An error occurred: ${err}`);
+        })
+        .finally(() => {
+          // Désactiver le flash si l'utilisateur l'a demandé
+          navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', torch: false } });
+        });
+    } else {
+      console.error("La caméra ne prend pas en charge le flash.");
     }
-
-     // On prend la valeur rgb centrale de l'image
-    const couleurAnalyser = (colors.length / 4) / 2;
-
-    if(ENVIRONMENT == "test") console.log(rgbValues[couleurAnalyser]);
-
-    // On affiche la catégorie de couleur et on lis la note associée
-    afficherCategorieCouleur(rgbValues[couleurAnalyser]);
   } else {
-    clearphoto();
+    console.error("Impossible de vérifier la prise en charge du flash.");
   }
 }
+
+// Fonction pour basculer l'état du flash
+function toggleFlash() {
+  isFlashEnabled = !isFlashEnabled;
+  console.log("Flash activé :", isFlashEnabled);
+}
+
+// Ajoutez un bouton pour activer/désactiver le flash
+const flashToggleButton = document.getElementById("flashToggleButton");
+flashToggleButton.addEventListener('click', toggleFlash);
 
 /**
  * Fonction qui permet de jouer une note en fonction de la couleur
